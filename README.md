@@ -1,2 +1,2 @@
 # Seguridad
-Segundo Proyecto Frontend con React
+Proyecto 2 – Frontend con React
