@@ -1,13 +1,14 @@
 "use client"
 import React from "react";
-
-
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { User } from "../../models/user";
 import SecurityService from '../../services/securityService';
-
 import Breadcrumb from "../../components/Breadcrumb";
+
+// Importa Firebase Auth
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../js/firebaseConfig.ts"; // ajusta la ruta según tu estructura
 
 
 const SignIn: React.FC = () => {
@@ -21,6 +22,28 @@ const SignIn: React.FC = () => {
       console.error('Error al iniciar sesión', error);
     }
   }
+
+  // login con Google
+  const handleGoogleLogin = async () => { // Se marca como async para usar await, que espera respuestas de operaciones que toman tiempo (como conectarse a Firebase)
+    try {
+      const result = await signInWithPopup(auth, provider); // signInWithPopup es una función de Firebase que abre una ventana emergente para que el usuario seleccione su cuenta de Google y se autentique, auth es la instancia principal de autenticación que creaste en firebaseConfig.ts. provider es el proveedor de autenticación (en este caso, new GoogleAuthProvider()).
+      const user = result.user; // result.user contiene la información del usuario autenticado.
+      const token = await user.getIdToken(); // Obtener el token de ID del usuario autenticado
+      console.log("Token de ID:", token);
+      console.log("Usuario con Google:", user);
+      localStorage.setItem("user", JSON.stringify({
+        uid: user.uid,
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        token: token // guardar el token también de una vez
+      }));
+      alert(`Bienvenido, ${user.displayName}`);
+    } catch (error) {
+      console.error("Error al iniciar con Google:", error);
+    }
+  };
+
   return (
     <>
       <Breadcrumb pageName="Sign In" />
@@ -30,20 +53,20 @@ const SignIn: React.FC = () => {
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
 
-                <img
-                  className="hidden dark:block"
-                  src={"/images/logo/logo.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                />
-                <img
-                  className="dark:hidden"
-                  src={"/images/logo/logo-dark.svg"}
-                  alt="Logo"
-                  width={176}
-                  height={32}
-                />
+              <img
+                className="hidden dark:block"
+                src={"/images/logo/logo.svg"}
+                alt="Logo"
+                width={176}
+                height={32}
+              />
+              <img
+                className="dark:hidden"
+                src={"/images/logo/logo-dark.svg"}
+                alt="Logo"
+                width={176}
+                height={32}
+              />
 
 
               <p className="2xl:px-20">
@@ -221,7 +244,7 @@ const SignIn: React.FC = () => {
                     >
                       Login
                     </button>
-                    <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50">
+                    <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50" onClick={handleGoogleLogin}>
                       <span>
                         <svg
                           width="20"
@@ -263,7 +286,7 @@ const SignIn: React.FC = () => {
               </Formik>
 
               <div className="mt-6 text-center">
-                
+
               </div>
             </div>
           </div>
