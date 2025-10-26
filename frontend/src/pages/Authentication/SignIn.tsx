@@ -9,52 +9,77 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/userSlice";
 
+
 // Importar Firebase Auth
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../js/firebaseConfig.ts"; // ajusta la ruta según tu estructura
+import { msalInstance } from '../../components/Auth/msalConfig';
+
+
 
 const SignIn: React.FC = () => {
+
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+
 
   const handleLogin = async (user: User) => {
-    console.log("aqui " + JSON.stringify(user))
+    console.log('aqui ' + JSON.stringify(user));
     try {
       const response = await SecurityService.login(user);
       console.log('Usuario autenticado:', response);
     } catch (error) {
       console.error('Error al iniciar sesión', error);
     }
-  }
+  };
 
   // login con Google
-  const handleGoogleLogin = async () => { // Se marca como async para usar await, que espera respuestas de operaciones que toman tiempo (como conectarse a Firebase)
+  const handleGoogleLogin = async () => {
+    // Se marca como async para usar await, que espera respuestas de operaciones que toman tiempo (como conectarse a Firebase)
     try {
       const result = await signInWithPopup(auth, provider); // signInWithPopup es una función de Firebase que abre una ventana emergente para que el usuario seleccione su cuenta de Google y se autentique, auth es la instancia principal de autenticación que se creó en firebaseConfig.ts. provider es el proveedor de autenticación (en este caso, new GoogleAuthProvider()).
       const user = result.user; // result.user contiene la información del usuario autenticado.
       const token = await user.getIdToken(); // Obtener el token de ID del usuario autenticado
       console.log("Token de ID:", token);
       console.log("Usuario con Google:", user);
-
-      const userData = {
+      localStorage.setItem("user", JSON.stringify({
         uid: user.uid,
-        name: user.displayName || "", 
-        email: user.email || "",
-        photo: user.photoURL || "",
-        token: token,
-      };
-
-
-      // Guardar en localStorage
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      // ACTUALIZAR REDUX TAMBIÉN
-      dispatch(setUser(userData));
-
-      navigate("/"); // Redirigir al usuario a la página principal después de iniciar sesión
-
+        name: user.displayName,
+        email: user.email,
+        photo: user.photoURL,
+        token: token // guardar el token también de una vez
+      }));
+      alert(`Bienvenido, ${user.displayName}`);
     } catch (error) {
-      console.error("Error al iniciar con Google:", error);
+      console.error('Error al iniciar con Google:', error);
+    }
+  };
+
+  // login con Microsoft
+  const handleMicrosoftLogin = async () => {
+    try {
+      const loginResponse = await msalInstance.loginPopup({
+        scopes: ['user.read', 'openid', 'profile', 'email'], // 🧠 incluye los básicos
+      });
+
+      console.log('Inicio de sesión exitoso:', loginResponse);
+
+      const account = loginResponse.account;
+
+      // Guardamos la info básica del usuario para usarla luego
+      if (account) {
+        localStorage.setItem(
+          'user',
+          JSON.stringify({
+            name: account.name,
+            email: account.username,
+          }),
+        );
+      }
+
+      // Redirige al home
+      navigate('/');
+    } catch (error) {
+      console.error('Error al iniciar sesión con Microsoft:', error);
     }
   };
 
@@ -66,22 +91,20 @@ const SignIn: React.FC = () => {
         <div className="flex flex-wrap items-center">
           <div className="hidden w-full xl:block xl:w-1/2">
             <div className="px-26 py-17.5 text-center">
-
               <img
                 className="hidden dark:block"
-                src={"/images/logo/logo.svg"}
+                src={'/images/logo/logo.svg'}
                 alt="Logo"
                 width={176}
                 height={32}
               />
               <img
                 className="dark:hidden"
-                src={"/images/logo/logo-dark.svg"}
+                src={'/images/logo/logo-dark.svg'}
                 alt="Logo"
                 width={176}
                 height={32}
               />
-
 
               <p className="2xl:px-20">
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit
@@ -222,34 +245,65 @@ const SignIn: React.FC = () => {
 
               <Formik
                 initialValues={{
-                  email: "",
-                  password: ""
+                  email: '',
+                  password: '',
                 }}
                 validationSchema={Yup.object({
-                  email: Yup.string().email("Email inválido").required("El email es obligatorio"),
-                  password: Yup.string().required("La contraseña es obligatoria"),
+                  email: Yup.string()
+                    .email('Email inválido')
+                    .required('El email es obligatorio'),
+                  password: Yup.string().required(
+                    'La contraseña es obligatoria',
+                  ),
                 })}
                 onSubmit={(values) => {
-                  const formattedValues = { ...values };  // Formateo adicional si es necesario
+                  const formattedValues = { ...values }; // Formateo adicional si es necesario
                   handleLogin(formattedValues);
                 }}
-
               >
                 {({ handleSubmit }) => (
-                  <Form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 p-6 bg-white rounded-md shadow-md">
-
+                  <Form
+                    onSubmit={handleSubmit}
+                    className="grid grid-cols-1 gap-4 p-6 bg-white rounded-md shadow-md"
+                  >
                     {/* Email */}
                     <div>
-                      <label htmlFor="email" className="block text-lg font-medium text-gray-700">Email</label>
-                      <Field type="email" name="email" className="w-full border rounded-md p-2" />
-                      <ErrorMessage name="email" component="p" className="text-red-500 text-sm" />
+                      <label
+                        htmlFor="email"
+                        className="block text-lg font-medium text-gray-700"
+                      >
+                        Email
+                      </label>
+                      <Field
+                        type="email"
+                        name="email"
+                        className="w-full border rounded-md p-2"
+                      />
+                      <ErrorMessage
+                        name="email"
+                        component="p"
+                        className="text-red-500 text-sm"
+                      />
                     </div>
 
                     {/* Edad */}
                     <div>
-                      <label htmlFor="password" className="block text-lg font-medium text-gray-700">Password</label>
-                      <Field type="password" name="password" className="w-full border rounded-md p-2" />
-                      <ErrorMessage name="password" component="p" className="text-red-500 text-sm" />
+                      <label
+                        htmlFor="password"
+                        className="block text-lg font-medium text-gray-700"
+                      >
+                        Password
+                      </label>
+                      <Field
+                        type="password"
+                        name="password"
+                        className="w-full border rounded-md p-2"
+                      />
+                      <ErrorMessage
+                        name="password"
+                        component="p"
+                        className="text-red-500 text-sm"
+                      />
                     </div>
                     {/* Botón de enviar */}
                     <button
@@ -258,7 +312,10 @@ const SignIn: React.FC = () => {
                     >
                       Login
                     </button>
-                    <button className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50" onClick={handleGoogleLogin}>
+                    <button
+                      className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50"
+                      onClick={handleGoogleLogin}
+                    >
                       <span>
                         <svg
                           width="20"
@@ -292,16 +349,58 @@ const SignIn: React.FC = () => {
                           </defs>
                         </svg>
                       </span>
-                      Sign in with Google
+                      Iniciar sesión con Google
                     </button>
-
+                    <button
+                      type="button"
+                      className="flex w-full items-center justify-center gap-3.5 rounded-lg border border-stroke bg-gray p-4 hover:bg-opacity-50 dark:border-strokedark dark:bg-meta-4 dark:hover:bg-opacity-50"
+                      onClick={handleMicrosoftLogin}
+                    >
+                      <span>
+                        <svg
+                          width="20"
+                          height="20"
+                          viewBox="0 0 23 23"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <rect
+                            x="1"
+                            y="1"
+                            width="9.5"
+                            height="9.5"
+                            fill="#F25022"
+                          />
+                          <rect
+                            x="12.5"
+                            y="1"
+                            width="9.5"
+                            height="9.5"
+                            fill="#7FBA00"
+                          />
+                          <rect
+                            x="1"
+                            y="12.5"
+                            width="9.5"
+                            height="9.5"
+                            fill="#00A4EF"
+                          />
+                          <rect
+                            x="12.5"
+                            y="12.5"
+                            width="9.5"
+                            height="9.5"
+                            fill="#FFB900"
+                          />
+                        </svg>
+                      </span>
+                      Iniciar sesión con Microsoft
+                    </button>
                   </Form>
                 )}
               </Formik>
 
-              <div className="mt-6 text-center">
-
-              </div>
+              <div className="mt-6 text-center"></div>
             </div>
           </div>
         </div>
