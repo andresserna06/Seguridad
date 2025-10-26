@@ -47,8 +47,6 @@ const SignIn: React.FC = () => {
 
       // Guardar en localStorage
       localStorage.setItem("user", JSON.stringify(userData));
-
-      // ACTUALIZAR REDUX TAMBIÉN
       dispatch(setUser(userData));
 
       navigate("/"); // Redirigir al usuario a la página principal después de iniciar sesión
