@@ -14,6 +14,8 @@
     "url": "https://tailadmin.com"
   },
   "dependencies": {
+    "@azure/msal-browser": "^4.25.1",
+    "@azure/msal-react": "^3.0.20",
     "@reduxjs/toolkit": "^2.5.1",
     "apexcharts": "^3.41.0",
     "axios": "^1.7.9",
