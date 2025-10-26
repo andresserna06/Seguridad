@@ -5,13 +5,17 @@ import * as Yup from "yup";
 import { User } from "../../models/user";
 import SecurityService from '../../services/securityService';
 import Breadcrumb from "../../components/Breadcrumb";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/userSlice";
 
-// Importa Firebase Auth
+// Importar Firebase Auth
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../js/firebaseConfig.ts"; // ajusta la ruta según tu estructura
 
-
 const SignIn: React.FC = () => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (user: User) => {
     console.log("aqui " + JSON.stringify(user))
@@ -26,19 +30,29 @@ const SignIn: React.FC = () => {
   // login con Google
   const handleGoogleLogin = async () => { // Se marca como async para usar await, que espera respuestas de operaciones que toman tiempo (como conectarse a Firebase)
     try {
-      const result = await signInWithPopup(auth, provider); // signInWithPopup es una función de Firebase que abre una ventana emergente para que el usuario seleccione su cuenta de Google y se autentique, auth es la instancia principal de autenticación que creaste en firebaseConfig.ts. provider es el proveedor de autenticación (en este caso, new GoogleAuthProvider()).
+      const result = await signInWithPopup(auth, provider); // signInWithPopup es una función de Firebase que abre una ventana emergente para que el usuario seleccione su cuenta de Google y se autentique, auth es la instancia principal de autenticación que se creó en firebaseConfig.ts. provider es el proveedor de autenticación (en este caso, new GoogleAuthProvider()).
       const user = result.user; // result.user contiene la información del usuario autenticado.
       const token = await user.getIdToken(); // Obtener el token de ID del usuario autenticado
       console.log("Token de ID:", token);
       console.log("Usuario con Google:", user);
-      localStorage.setItem("user", JSON.stringify({
+
+      const userData = {
         uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-        photo: user.photoURL,
-        token: token // guardar el token también de una vez
-      }));
-      alert(`Bienvenido, ${user.displayName}`);
+        name: user.displayName || "", 
+        email: user.email || "",
+        photo: user.photoURL || "",
+        token: token,
+      };
+
+
+      // Guardar en localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+
+      // ACTUALIZAR REDUX TAMBIÉN
+      dispatch(setUser(userData));
+
+      navigate("/"); // Redirigir al usuario a la página principal después de iniciar sesión
+
     } catch (error) {
       console.error("Error al iniciar con Google:", error);
     }
