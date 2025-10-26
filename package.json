@@ -1,5 +1,9 @@
 {
   "dependencies": {
-    "firebase": "^12.4.0"
+    "@azure/msal-browser": "^4.25.1",
+    "@azure/msal-react": "^3.0.20",
+    "firebase": "^12.4.0",
+    "formik": "^2.4.6",
+    "yup": "^1.7.1"
   }
 }
