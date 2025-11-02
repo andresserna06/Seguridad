@@ -1,3 +1,5 @@
+import { Role } from "./role";
+
 export interface User {
     id?: number;
     name?: string;
@@ -7,4 +9,5 @@ export interface User {
     city?: string;
     phone?: string;
     is_active?: boolean;
+    roles?: Role[]; // Un usuario puede tener varios roles asignados
 }

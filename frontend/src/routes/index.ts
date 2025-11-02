@@ -7,7 +7,9 @@ const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
 const Profile = lazy(() => import('../pages/Profile'));
 const Settings = lazy(() => import('../pages/Settings'));
-const Tables = lazy(() => import('../pages/Tables'));
+const ListRoles = lazy(() => import('../pages/Roles/List'));
+const CreateRole = lazy(() => import('../pages/Roles/Create'));
+const UpdateRole = lazy(() => import('../pages/Roles/Update'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 
@@ -18,7 +20,7 @@ const UpdatetUser = lazy(() => import('../pages/Users/update'));
 const coreRoutes = [
   {
     path: '/calendar',
-    title: 'Calender',
+    title: 'Calendar',
     component: Calendar,
   },
   {
@@ -37,9 +39,24 @@ const coreRoutes = [
     component: FormLayout,
   },
   {
-    path: '/tables',
-    title: 'Tables',
-    component: Tables,
+    path: '/roles',
+    title: 'Roles',
+    component: ListRoles,
+  },
+  {
+    path: '/roles/create',
+    title: 'Create Role',
+    component: CreateRole,
+  },
+  {
+    path: '/roles/update/:id',
+    title: 'Update Role',
+    component: UpdateRole,
+  },
+  {
+    path: '/roles/update/:id',
+    title: 'Update Role',
+    component: UpdateRole,
   },
   {
     path: '/settings',
