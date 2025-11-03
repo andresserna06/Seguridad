@@ -1,14 +1,13 @@
-"use client"
 import React, { useState } from 'react'; // Asegúrate de importar useState
 import { User } from '../../models/user';
-import UserFormValidator from '../../components/Users/UserFormValidator'; 
+import UserFormValidator from '../../components/UserFormValidator';
 
 import Swal from 'sweetalert2';
-import { createUser } from "../../services/userService";
+import { userService } from "../../services/userService";
 import Breadcrumb from '../../components/Breadcrumb';
 import { useNavigate } from "react-router-dom";
 
-const App = () => {
+const CreateUser: React.FC = () => {
     const navigate = useNavigate();
 
     // Estado para almacenar el usuario a editar
@@ -17,7 +16,8 @@ const App = () => {
     const handleCreateUser = async (user: User) => {
 
         try {
-            const createdUser = await createUser(user);
+            const createdUser = await userService.createUser(user);
+            
             if (createdUser) {
                 Swal.fire({
                     title: "Completado",
@@ -26,7 +26,7 @@ const App = () => {
                     timer: 3000
                 })
                 console.log("Usuario creado con éxito:", createdUser);
-                navigate("/users");
+                navigate("/users/list");
             } else {
                 Swal.fire({
                     title: "Error",
@@ -48,13 +48,13 @@ const App = () => {
         <div>
             {/* Formulario para crear un nuevo usuario */}
             <h2>Create User</h2>
-                <Breadcrumb pageName="Crear Usuario" />
-                <UserFormValidator
-                    handleCreate={handleCreateUser}
-                    mode={1} // 1 significa creación
-                />
+            <Breadcrumb pageName="Crear Usuario" />
+            <UserFormValidator
+                handleCreate={handleCreateUser}
+                mode={1} // 1 significa creación
+            />
         </div>
     );
 };
 
-export default App;
+export default CreateUser;

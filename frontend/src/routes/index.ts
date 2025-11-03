@@ -1,4 +1,5 @@
 import { lazy } from 'react';
+import CreateUser from '../pages/Users/create';
 
 
 const Calendar = lazy(() => import('../pages/Calendar'));
@@ -11,7 +12,7 @@ const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 
-const ListUsers = lazy(() => import('../pages/Users/page'));
+const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
 const CreatetUser = lazy(() => import('../pages/Users/create'));
 const UpdatetUser = lazy(() => import('../pages/Users/update'));
 
@@ -62,21 +63,20 @@ const coreRoutes = [
     component: Buttons,
   },
   {
-    path: '/users',
-    title: 'Users',
+    path: '/users/list',
+    title: 'List Users',
     component: ListUsers,
   },
   {
-    path: '/users/create',
-    title: 'Create User',
-    component: CreatetUser,
+  path: '/users/create',
+  tittle: 'Create User',
+  component: CreateUser,
   },
   {
     path: '/users/update/:id',
-    title: 'Update User',
+    title: 'Update Users',
     component: UpdatetUser,
-  }
-  
+  },
 ];
 
 const routes = [...coreRoutes];
