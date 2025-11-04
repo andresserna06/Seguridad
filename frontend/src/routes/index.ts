@@ -3,7 +3,6 @@ import { lazy } from 'react';
 // Pages
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
-const Profile = lazy(() => import('../pages/Profile'));
 const ListRoles = lazy(() => import('../pages/Roles/ListRole'));
 const CreateRole = lazy(() => import('../pages/Roles/CreateRole'));
 const UpdateRole = lazy(() => import('../pages/Roles/UpdateRole'));
@@ -67,12 +66,6 @@ const coreRoutes = [
     component: CreateUserRole,
   },
 
-  // Usuarios
-  {
-    path: '/users',
-    title: 'Users',
-    component: ListUsers,
-  },
   {
     path: '/users/list',
     title: 'List Users',
