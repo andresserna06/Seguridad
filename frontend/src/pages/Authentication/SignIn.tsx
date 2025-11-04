@@ -2,7 +2,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { User } from "../../models/user";
+import { User } from "../../models/user.ts";
 import SecurityService from '../../services/securityService';
 import Breadcrumb from "../../components/Breadcrumb";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +18,6 @@ import { msalInstance } from '../../components/Auth/msalConfig';
 
 
 const SignIn: React.FC = () => {
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -58,7 +57,7 @@ const SignIn: React.FC = () => {
       navigate("/"); // Redirigir al usuario a la página principal después de iniciar sesión
 
     } catch (error) {
-      console.error("Error al iniciar con Google:", error);
+      console.error('Error al iniciar con Google:', error);
     }
   };
 
