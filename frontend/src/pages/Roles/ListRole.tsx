@@ -10,6 +10,7 @@ const RolesList = () => {
 
     const columns = ["id", "name", "description"];
     const actions = [
+        { name: "ver", label: "Ver" },
         { name: "edit", label: "Editar" },
         { name: "delete", label: "Eliminar" },
         { name: "permissions", label: "Permisos" },
@@ -39,6 +40,8 @@ const RolesList = () => {
             await handleDelete(item);
         } else if (action === "permissions") { //  manejar permisos aquí
             navigate(`/roles/${item.id}/permissions`);
+        } else if (action === "ver") {
+            navigate(`/user-roles/${item.id}`);
         }
     };
 
@@ -68,7 +71,6 @@ const RolesList = () => {
 
     return (
         <div>
-
             <GenericTableMUI
                 title="Roles"
                 data={roles}

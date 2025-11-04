@@ -1,9 +1,10 @@
 export interface Address {
   id?: number;
+  user_id?: number; // FK hacia User
   street: string;
   number: string;
   latitude?: number;
   longitude?: number;
-  userId?: number;
+  created_at?: Date;
+  updated_at?: Date;
 }
-// Define una interfaz TypeScript llamada Address que describe cómo debe lucir un objeto de tipo "dirección".

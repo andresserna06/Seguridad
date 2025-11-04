@@ -39,7 +39,7 @@ const GenericTableMUI: React.FC<GenericTableProps> = ({
             {title && <h2>{title}</h2>}
             {onAdd && (
                 <Box mb={2}>
-                    <Button variant="contained" color="primary" onClick={onAdd}>
+                    <Button variant="contained" color="success" onClick={onAdd}>
                         Agregar
                     </Button>
                 </Box>

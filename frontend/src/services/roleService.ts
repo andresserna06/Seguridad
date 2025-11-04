@@ -34,6 +34,7 @@ export const createRole = async (role: Omit<Role, "id">): Promise<Role | null> =
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(role),
     });
+    console.log(response);
     if (!response.ok) throw new Error("Error al crear rol");
     return await response.json();
   } catch (error) {

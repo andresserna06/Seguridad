@@ -2,6 +2,7 @@
 import { useNavigate } from "react-router-dom";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import { createRole } from "../../services/roleService";
+import Breadcrumb from "../../components/Breadcrumb";
 
 const CreateRole = () => {
   const navigate = useNavigate();
@@ -17,13 +18,17 @@ const CreateRole = () => {
   };
 
   return (
-    <GenericFormMUI
-      open={true} // no importa, estamos usando la página completa
-      fields={fields}
-      initialData={{}}
-      onClose={() => navigate("/roles")}
-      onSubmit={handleSubmit}
-    />
+    <div> <Breadcrumb pageName="Crear Rol" />
+      <GenericFormMUI
+        open={true} // no importa, estamos usando la página completa
+        fields={fields}
+        initialData={{}}
+        onClose={() => navigate("/roles")}
+        onSubmit={handleSubmit}
+      />
+
+    </div>
+
   );
 };
 

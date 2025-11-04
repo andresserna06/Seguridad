@@ -7,7 +7,6 @@ import { Route, Routes } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 
 // Importamos las páginas principales
-import ECommerce from './pages/Dashboard/ECommerce';
 import SignIn from './pages/Authentication/SignIn';
 import SignUp from './pages/Authentication/SignUp';
 
@@ -19,6 +18,7 @@ import routes from './routes';
 
 // Importamos un componente que protege rutas (solo accesibles si el usuario está autenticado)
 import ProtectedRoute from "../src/components/Auth/ProtectedRoute";
+import RolesList from './pages/Roles/ListRole';
 
 // Importamos el layout principal de la aplicación de forma "perezosa" (lazy loading),
 // es decir, que se carga solo cuando se necesita.
@@ -56,7 +56,7 @@ function App() {
         {/* Rutas protegidas (requieren autenticación) */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DefaultLayout />}>
-            <Route index element={<ECommerce />} />
+            <Route index element={<RolesList />} />
              {/* Mapeo dinámico de las demás rutas definidas en routes */}
             {routes.map((routes, index) => {
               const { path, component: Component } = routes;

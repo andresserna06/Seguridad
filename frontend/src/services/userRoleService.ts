@@ -26,14 +26,40 @@ export const getUserRoleById = async (id: number): Promise<UserRole | null> => {
   }
 };
 
-// Crear nuevo UserRole
-export const createUserRole = async (userRole: Omit<UserRole, "id">): Promise<UserRole | null> => {
+// Obtener usuarios por rol
+export const getUsersByRole = async (roleId: number): Promise<UserRole[]> => {
   try {
-    const response = await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(userRole),
-    });
+    const response = await fetch(`${API_URL}/role/${roleId}`);
+    if (!response.ok) throw new Error("Error al obtener usuarios por rol");
+    return await response.json();
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+
+// Crear nuevo UserRole
+export const createUserRole = async (
+  userRole: Omit<UserRole, "id">
+): Promise<UserRole | null> => {
+  try {
+    // Convertir fechas Date a ISO string antes de enviar
+    const payload = {
+      ...userRole,
+      startAt: userRole.start_At?.toISOString().slice(0, 19).replace("T", " "),
+      endAt: userRole.end_At?.toISOString().slice(0, 19).replace("T", " "),
+    };
+
+    const response = await fetch(
+      `${API_URL}/user/${userRole.user_id}/role/${userRole.role_id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      }
+    );
+
     if (!response.ok) throw new Error("Error al crear UserRole");
     return await response.json();
   } catch (error) {
@@ -59,7 +85,7 @@ export const updateUserRole = async (id: number, userRole: Partial<UserRole>): P
 };
 
 // Eliminar UserRole
-export const deleteUserRole = async (id: number): Promise<boolean> => {
+export const deleteUserRole = async (id: string): Promise<boolean> => {
   try {
     const response = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
     if (!response.ok) throw new Error("Error al eliminar UserRole");

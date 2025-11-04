@@ -7,36 +7,42 @@ import {
   TextField,
   Button,
   Box,
+  MenuItem
 } from "@mui/material";
 
 interface Field {
-  name: string; // nombre del campo (debe coincidir con la propiedad del objeto)
-  label: string; // etiqueta visible
-  type?: "text" | "number" | "email" | "password"; // tipo de input
+  name: string;
+  label: string;
+  type?: "text" | "number" | "email" | "password" | "select";
+  options?: { value: any; label: string }[]; // 👈 añadida
 }
 
 interface GenericFormProps {
-  open: boolean; // controlar apertura del modal
-  title?: string; // título del formulario
-  fields: Field[]; // definición de los campos del formulario
-  initialData?: Record<string, any>; // datos iniciales (para update)
-  onClose: () => void; // cerrar modal
-  onSubmit: (formData: Record<string, any>) => void; // enviar datos
+  open: boolean;
+  title?: string;
+  fields: Field[];
+  initialData?: Record<string, any>;
+  onClose: () => void;
+  onSubmit: (formData: Record<string, any>) => void;
+  selectOptions?: Record<string, { value: any; label: string }[]>;
 }
 
 const GenericFormMUI: React.FC<GenericFormProps> = ({
   open,
   title,
   fields,
-  initialData = {},
+  initialData,
   onClose,
   onSubmit,
 }) => {
   const [formData, setFormData] = useState<Record<string, any>>({});
 
   useEffect(() => {
-    setFormData(initialData); // cargar datos iniciales si existen
-  }, [initialData]);
+    // Solo actualiza si initialData existe y no está vacío
+    if (initialData && Object.keys(initialData).length > 0) {
+      setFormData(initialData);
+    }
+  }, [initialData]); // se ejecuta solo si initialData cambia realmente
 
   const handleChange = (name: string, value: any) => {
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -44,7 +50,6 @@ const GenericFormMUI: React.FC<GenericFormProps> = ({
 
   const handleSubmit = () => {
     onSubmit(formData);
-    // opcional: reset formData si quieres limpiar después de enviar
   };
 
   return (
@@ -52,20 +57,38 @@ const GenericFormMUI: React.FC<GenericFormProps> = ({
       {title && <DialogTitle>{title}</DialogTitle>}
       <DialogContent>
         <Box display="flex" flexDirection="column" gap={2} mt={1}>
-          {fields.map((field) => (
-            <TextField
-              key={field.name}
-              label={field.label}
-              type={field.type || "text"}
-              value={formData[field.name] || ""}
-              onChange={(e) => handleChange(field.name, e.target.value)}
-              fullWidth
-            />
-          ))}
+          {fields.map((field) =>
+            field.type === "select" ? (
+              <TextField
+                key={field.name}
+                select
+                label={field.label}
+                value={formData[field.name] || ""}
+                onChange={(e) => handleChange(field.name, e.target.value)}
+                fullWidth
+              >
+                {field.options?.map((option) => (
+                  <MenuItem key={option.value} value={option.value}>
+                    {option.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            ) : (
+              <TextField
+                key={field.name}
+                label={field.label}
+                type={field.type || "text"}
+                value={formData[field.name] || ""}
+                onChange={(e) => handleChange(field.name, e.target.value)}
+                fullWidth
+              />
+            )
+          )}
         </Box>
       </DialogContent>
+
       <DialogActions>
-        <Button onClick={onClose} color="secondary">
+        <Button onClick={onClose} color="error">
           Cancelar
         </Button>
         <Button onClick={handleSubmit} variant="contained" color="primary">

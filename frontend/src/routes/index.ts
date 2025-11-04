@@ -1,28 +1,22 @@
 import { lazy } from 'react';
 
 
-const Calendar = lazy(() => import('../pages/Calendar'));
-const Chart = lazy(() => import('../pages/Chart'));
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
 const Profile = lazy(() => import('../pages/Profile'));
-const Settings = lazy(() => import('../pages/Settings'));
-const ListRoles = lazy(() => import('../pages/Roles/List'));
-const CreateRole = lazy(() => import('../pages/Roles/Create'));
-const UpdateRole = lazy(() => import('../pages/Roles/Update'));
-const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
-const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
+const ListRoles = lazy(() => import('../pages/Roles/ListRole'));
+const CreateRole = lazy(() => import('../pages/Roles/CreateRole'));
+const UpdateRole = lazy(() => import('../pages/Roles/UpdateRole'));
+const ListUserRole = lazy(() => import('../pages/UserRole/ListUserRole'));
+const CreateUserRole = lazy(() => import('../pages/UserRole/CreateUserRole'));
 
-const ListUsers = lazy(() => import('../pages/Users/page'));
-const CreatetUser = lazy(() => import('../pages/Users/create'));
-const UpdatetUser = lazy(() => import('../pages/Users/update'));
+const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
+const CreateUser = lazy(() => import('../pages/Users/CreateUsers'));
+const UpdatetUser = lazy(() => import('../pages/Users/UpdateUsers'));
+const AddressPage = lazy(() => import('../pages/Address/AddressPage'));
 
 const coreRoutes = [
-  {
-    path: '/calendar',
-    title: 'Calendar',
-    component: Calendar,
-  },
+  
   {
     path: '/profile',
     title: 'Profile',
@@ -59,25 +53,16 @@ const coreRoutes = [
     component: UpdateRole,
   },
   {
-    path: '/settings',
-    title: 'Settings',
-    component: Settings,
+    path: '/user-roles/:id',
+    title: 'User Role',
+    component: ListUserRole,
   },
   {
-    path: '/chart',
-    title: 'Chart',
-    component: Chart,
+    path: '/user-roles/:id/create',
+    title: ' Create User Role',
+    component: CreateUserRole,
   },
-  {
-    path: '/ui/alerts',
-    title: 'Alerts',
-    component: Alerts,
-  },
-  {
-    path: '/ui/buttons',
-    title: 'Buttons',
-    component: Buttons,
-  },
+
   {
     path: '/users',
     title: 'Users',
@@ -86,13 +71,19 @@ const coreRoutes = [
   {
     path: '/users/create',
     title: 'Create User',
-    component: CreatetUser,
+    component: CreateUser,
   },
   {
     path: '/users/update/:id',
     title: 'Update User',
     component: UpdatetUser,
-  }
+  },
+  {
+    path: '/users/address/:id',
+  title: 'User Address',
+  component: AddressPage,
+}
+
   
 ];
 

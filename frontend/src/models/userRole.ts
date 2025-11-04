@@ -1,8 +1,7 @@
 export interface UserRole {
-  id?: string; 
-  userId: number;
-  roleId: number;
-  startAt?: string;
-  endAt?: string;
+  id?: string;        // Opcional, si la DB genera un UUID automáticamente
+  user_id: number;     // FK hacia User
+  role_id: number;     // FK hacia Role
+  start_At?: Date;   // Fecha opcional de inicio
+  end_At?: Date;     // Fecha opcional de fin
 }
-// Define una interfaz TypeScript llamada UserRole, que describe cómo debe lucir un objeto de tipo "rol de usuario".
