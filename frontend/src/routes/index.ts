@@ -8,8 +8,8 @@ const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 
 const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
-const CreateUser = lazy(() => import('../pages/Users/Create'));
-const UpdateUser = lazy(() => import('../pages/Users/Update'));
+const CreateUser = lazy(() => import('../pages/Users/create'));
+const UpdateUser = lazy(() => import('../pages/Users/update'));
 const ProfilePage = lazy(() => import('../pages/Users/Profile'));
 
 const coreRoutes = [
