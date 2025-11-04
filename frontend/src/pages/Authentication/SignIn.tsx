@@ -43,12 +43,28 @@ const SignIn: React.FC = () => {
       console.log("Usuario con Google:", user);
       localStorage.setItem("user", JSON.stringify({
         uid: user.uid,
+<<<<<<< HEAD
         name: user.displayName,
         email: user.email,
         photo: user.photoURL,
         token: token // guardar el token también de una vez
       }));
       alert(`Bienvenido, ${user.displayName}`);
+=======
+        name: user.displayName || "", 
+        email: user.email || "",
+        photo: user.photoURL || "",
+        token: token,
+      };
+
+
+      // Guardar en localStorage
+      localStorage.setItem("user", JSON.stringify(userData));
+      dispatch(setUser(userData));
+
+      navigate("/"); // Redirigir al usuario a la página principal después de iniciar sesión
+
+>>>>>>> LIMR
     } catch (error) {
       console.error('Error al iniciar con Google:', error);
     }
