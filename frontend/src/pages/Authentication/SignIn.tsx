@@ -2,7 +2,7 @@
 import React from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
-import { User } from "../../models/user";
+import { User } from "../../models/user.ts";
 import SecurityService from '../../services/securityService';
 import Breadcrumb from "../../components/Breadcrumb";
 import { useNavigate } from "react-router-dom";

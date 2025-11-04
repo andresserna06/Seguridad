@@ -1,5 +1,5 @@
-import ListUsers from "../../components/Users/ListUsers";
 import Breadcrumb from "../../components/Breadcrumb";
+import ListUsers from "./ListUsers";
 
 
 

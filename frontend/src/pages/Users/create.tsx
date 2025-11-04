@@ -1,11 +1,10 @@
 import React, { useState } from 'react'; // Asegúrate de importar useState
 import { User } from '../../models/user';
-import UserFormValidator from '../../components/UserFormValidator';
-
 import Swal from 'sweetalert2';
 import { userService } from "../../services/userService";
 import Breadcrumb from '../../components/Breadcrumb';
 import { useNavigate } from "react-router-dom";
+import TailwindUserForm from '../../components/TailWind/TailwindUserForm';
 
 const CreateUser: React.FC = () => {
     const navigate = useNavigate();
@@ -49,7 +48,7 @@ const CreateUser: React.FC = () => {
             {/* Formulario para crear un nuevo usuario */}
             <h2>Create User</h2>
             <Breadcrumb pageName="Crear Usuario" />
-            <UserFormValidator
+            <TailwindUserForm
                 handleCreate={handleCreateUser}
                 mode={1} // 1 significa creación
             />

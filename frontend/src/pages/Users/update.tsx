@@ -1,15 +1,16 @@
+
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
-import { getUserById, updateUser } from "../../services/userService";
+import { userService } from "../../services/userService";
 import Swal from "sweetalert2";
 
 import { User } from '../../models/user';
-import UserFormValidator from '../../components/Users/UserFormValidator';
 import Breadcrumb from "../../components/Breadcrumb";
+import TailwindUserForm from "../../components/TailWind/TailwindUserForm";
 
-const UpdateUserPage = () => {
-    const { id } = useParams(); // Obtener el ID de la URL
+const UpdateUser: React.FC = () => {
+    const { id } = useParams(); // Obtener el ID de la URL mediante router-dom
     
     const navigate = useNavigate();
     const [user, setUser] = useState<User | null>(null);
@@ -19,7 +20,7 @@ const UpdateUserPage = () => {
         console.log("Id->"+id)
         const fetchUser = async () => {
             if (!id) return; // Evitar errores si el ID no está disponible
-            const userData = await getUserById(parseInt(id));
+            const userData = await userService.getUserById(parseInt(id));
             setUser(userData);
         };
 
@@ -28,7 +29,7 @@ const UpdateUserPage = () => {
 
     const handleUpdateUser = async (theUser: User) => {
         try {
-            const updatedUser = await updateUser(theUser.id || 0, theUser);
+            const updatedUser = await userService.updateUser(theUser.id || 0, theUser);
             if (updatedUser) {
                 Swal.fire({
                     title: "Completado",
@@ -36,7 +37,7 @@ const UpdateUserPage = () => {
                     icon: "success",
                     timer: 3000
                 });
-                navigate("/users"); // Redirección en React Router
+                navigate("/users/list"); // Redirección en React Router
             } else {
                 Swal.fire({
                     title: "Error",
@@ -62,7 +63,7 @@ const UpdateUserPage = () => {
     return (
         <>
             <Breadcrumb pageName="Actualizar Usuario" />
-            <UserFormValidator
+            <TailwindUserForm
                 handleUpdate={handleUpdateUser}
                 mode={2} // 2 significa actualización
                 user={user}
@@ -71,4 +72,4 @@ const UpdateUserPage = () => {
     );
 };
 
-export default UpdateUserPage;
+export default UpdateUser;

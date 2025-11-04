@@ -1,46 +1,27 @@
 import { lazy } from 'react';
-import CreateUser from '../pages/Users/create';
 
-
-const Calendar = lazy(() => import('../pages/Calendar'));
 const Chart = lazy(() => import('../pages/Chart'));
-const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
-const Profile = lazy(() => import('../pages/Profile'));
+const TailwindUserProfile = lazy(() => import('../components/TailWind/TailwindProfile'));
 const Settings = lazy(() => import('../pages/Settings'));
-const Tables = lazy(() => import('../pages/Tables'));
 const Alerts = lazy(() => import('../pages/UiElements/Alerts'));
 const Buttons = lazy(() => import('../pages/UiElements/Buttons'));
 
 const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
-const CreatetUser = lazy(() => import('../pages/Users/create'));
-const UpdatetUser = lazy(() => import('../pages/Users/update'));
+const CreateUser = lazy(() => import('../pages/Users/Create'));
+const UpdateUser = lazy(() => import('../pages/Users/Update'));
+const ProfilePage = lazy(() => import('../pages/Users/Profile'));
 
 const coreRoutes = [
   {
-    path: '/calendar',
-    title: 'Calender',
-    component: Calendar,
-  },
-  {
     path: '/profile',
     title: 'Profile',
-    component: Profile,
-  },
-  {
-    path: '/forms/form-elements',
-    title: 'Forms Elements',
-    component: FormElements,
+    component: TailwindUserProfile,
   },
   {
     path: '/forms/form-layout',
     title: 'Form Layouts',
     component: FormLayout,
-  },
-  {
-    path: '/tables',
-    title: 'Tables',
-    component: Tables,
   },
   {
     path: '/settings',
@@ -68,6 +49,12 @@ const coreRoutes = [
     component: ListUsers,
   },
   {
+    path: '/users/profile/:id',
+    title: 'Perfil',
+    component: ProfilePage,
+
+  },
+  {
   path: '/users/create',
   tittle: 'Create User',
   component: CreateUser,
@@ -75,7 +62,7 @@ const coreRoutes = [
   {
     path: '/users/update/:id',
     title: 'Update Users',
-    component: UpdatetUser,
+    component: UpdateUser,
   },
 ];
 
