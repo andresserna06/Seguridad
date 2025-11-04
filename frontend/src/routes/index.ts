@@ -94,7 +94,7 @@ const coreRoutes = [
     component: AddressPage,
   },
   {
-    path: '/users/profile/:id',
+    path: '/profile/:id',
     title: 'Perfil',
     component: ProfilePage,
   },

@@ -102,6 +102,31 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </h3>
 
           <ul className="mb-6 flex flex-col gap-1.5">
+            {/* Perfil */}
+            <li>
+              <NavLink
+                to="/profile"
+                className={`group relative flex items-center gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
+                }`}
+              >
+                <svg
+                  className="fill-current"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 18 18"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 9C11.2091 9 13 7.20914 13 5C13 2.79086 11.2091 1 9 1C6.79086 1 5 2.79086 5 5C5 7.20914 6.79086 9 9 9ZM9 10C5.13401 10 1 12.134 1 16V17C1 17.5523 1.44772 18 2 18H16C16.5523 18 17 17.5523 17 17V16C17 12.134 12.866 10 9 10Z"
+                    fill=""
+                  />
+                </svg>
+                Perfil
+              </NavLink>
+            </li>
+
             {/* Usuarios */}
             <li>
               <NavLink
