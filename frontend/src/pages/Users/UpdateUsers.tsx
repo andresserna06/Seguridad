@@ -2,17 +2,20 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-import { getUserById, updateUser } from "../../services/userService";
-import { User } from "../../models/user";
+import { userService } from "../../services/userService";
+import { User } from '../../models/user';
 import Breadcrumb from "../../components/Breadcrumb";
-import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 
-const UpdateUserPage = () => {
+// Formularios disponibles
+import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
+import TailwindUserForm from "../../components/TailWind/TailwindUserForm";
+
+const UpdateUser: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState<User | null>(null);
 
-    // Definir campos del formulario
+    // Campos del formulario
     const updateFields = [
         { name: "name", label: "Nombre", type: "text" as const },
         { name: "email", label: "Correo", type: "email" as const },
@@ -24,19 +27,19 @@ const UpdateUserPage = () => {
     useEffect(() => {
         const fetchUser = async () => {
             if (!id) return;
-            const userData = await getUserById(parseInt(id));
+            const userData = await userService.getUserById(parseInt(id));
             setUser(userData);
         };
         fetchUser();
     }, [id]);
 
-    // Memorizar el usuario para evitar recrear el objeto en cada render
+    // Memorizar usuario
     const memoizedUser = useMemo(() => user, [user]);
 
-    // Manejar actualización
+    // Actualización
     const handleUpdateUser = async (theUser: User) => {
         try {
-            const updatedUser = await updateUser(theUser.id || 0, theUser);
+            const updatedUser = await userService.updateUser(theUser.id || 0, theUser);
             if (updatedUser) {
                 Swal.fire({
                     title: "Completado",
@@ -44,7 +47,7 @@ const UpdateUserPage = () => {
                     icon: "success",
                     timer: 3000,
                 });
-                navigate("/users");
+                navigate("/users/list"); // Redirección unificada
             } else {
                 Swal.fire({
                     title: "Error",
@@ -68,16 +71,25 @@ const UpdateUserPage = () => {
     return (
         <>
             <Breadcrumb pageName="Actualizar Usuario" />
+
+            {/* Formulario Material UI */}
             <GenericFormMUI
                 open={true}
                 title="Actualizar Usuario"
                 fields={updateFields}
-                initialData={memoizedUser || {}} // 👈 evita bucle
+                initialData={memoizedUser || {}}
                 onSubmit={handleUpdateUser}
-                onClose={() => navigate("/users")}
+                onClose={() => navigate("/users/list")}
+            />
+
+            {/* Formulario Tailwind */}
+            <TailwindUserForm
+                handleUpdate={handleUpdateUser}
+                mode={2} // 2 = actualización
+                user={user}
             />
         </>
     );
 };
 
-export default UpdateUserPage;
+export default UpdateUser;

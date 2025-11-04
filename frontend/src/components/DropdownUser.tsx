@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-
-import UserOne from '../images/user/user-01.png';
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
+import UserOne from '../images/user/user-01.png';
+
 const DropdownUser = () => {
-  const user = useSelector((state: RootState) => state.user.user); // Obtener el valor de la variable del usuario
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  // Esto lee la base de datos global del store 
+  const user = useSelector((state: RootState) => state.user.user);
+  // --------------------------------------------------------------------
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
@@ -48,7 +51,7 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-          <h2>Bienvenido, {user?.name || "Invitado"}</h2>
+            {user ? user.name: 'Guest'}
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>

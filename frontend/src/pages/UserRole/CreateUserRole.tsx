@@ -4,11 +4,11 @@ import Swal from "sweetalert2";
 import Breadcrumb from "../../components/Breadcrumb";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import { getRoleById } from "../../services/roleService";
-import { getUsers } from "../../services/userService";
 import { Role } from "../../models/role";
 import { User } from "../../models/user";
 import { createUserRole } from "../../services/userRoleService";
 import { UserRole } from "../../models/userRole";
+import { userService } from "../../services/userService";
 
 const CreateUserRole: React.FC = () => {
     const { id } = useParams(); // ID del rol
@@ -20,7 +20,7 @@ const CreateUserRole: React.FC = () => {
     useEffect(() => {
         const fetchData = async () => {
             const roleData = await getRoleById(Number(id));
-            const usersData = await getUsers();
+            const usersData = await userService.getUsers();
             setRole(roleData);
             setUsers(usersData);
         };

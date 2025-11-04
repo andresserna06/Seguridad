@@ -19,6 +19,7 @@ import routes from './routes';
 // Importamos un componente que protege rutas (solo accesibles si el usuario está autenticado)
 import ProtectedRoute from "../src/components/Auth/ProtectedRoute";
 import RolesList from './pages/Roles/ListRole';
+import ListUsers from './pages/Users/ListUsers';
 
 // Importamos el layout principal de la aplicación de forma "perezosa" (lazy loading),
 // es decir, que se carga solo cuando se necesita.
@@ -56,8 +57,7 @@ function App() {
         {/* Rutas protegidas (requieren autenticación) */}
         <Route element={<ProtectedRoute />}>
           <Route element={<DefaultLayout />}>
-            <Route index element={<RolesList />} />
-             {/* Mapeo dinámico de las demás rutas definidas en routes */}
+            <Route index element={<ListUsers />} />
             {routes.map((routes, index) => {
               const { path, component: Component } = routes;
               return (
