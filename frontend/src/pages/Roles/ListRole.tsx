@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI";
-import { getRoles, deleteRole } from "../../services/roleService"; // asegurarse de exportar deleteRole
+import { getRoles, deleteRole } from "../../services/roleService"; 
 import Swal from "sweetalert2";
 
 const RolesList = () => {
     const [roles, setRoles] = useState<any[]>([]);
     const navigate = useNavigate();
 
-    const columns = ["id", "name", "description"];
+    // 🔹 Columnas con key y label
+    const columns = [
+        { key: "id", label: "ID" },
+        { key: "name", label: "Nombre del Rol" },
+        { key: "description", label: "Descripción" }
+    ];
+
     const actions = [
         { name: "ver", label: "Ver" },
         { name: "edit", label: "Editar" },
@@ -38,7 +44,7 @@ const RolesList = () => {
             navigate(`/roles/update/${item.id}`);
         } else if (action === "delete") {
             await handleDelete(item);
-        } else if (action === "permissions") { //  manejar permisos aquí
+        } else if (action === "permissions") {
             navigate(`/roles/${item.id}/permissions`);
         } else if (action === "ver") {
             navigate(`/user-roles/${item.id}`);
@@ -58,9 +64,9 @@ const RolesList = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await deleteRole(item.id); // función del service
+                    await deleteRole(item.id);
                     Swal.fire("Eliminado", "El rol ha sido eliminado", "success");
-                    fetchRoles(); // refresca la lista
+                    fetchRoles();
                 } catch (error) {
                     console.error("Error deleting role:", error);
                     Swal.fire("Error", "No se pudo eliminar el rol", "error");
@@ -74,7 +80,7 @@ const RolesList = () => {
             <GenericTableMUI
                 title="Roles"
                 data={roles}
-                columns={columns}
+                columns={columns} // usamos key/label
                 actions={actions}
                 onAdd={handleAdd}
                 onAction={handleAction}

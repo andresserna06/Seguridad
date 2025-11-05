@@ -22,7 +22,7 @@ const GenericButtonMUI: React.FC<GenericButtonProps> = ({
   sx = {},
 }) => {
   return (
-    <Button
+    <Button 
       variant={variant}
       color={color}
       size={size}

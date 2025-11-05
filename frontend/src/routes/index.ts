@@ -14,7 +14,7 @@ const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
 const CreateUser = lazy(() => import('../pages/Users/CreateUsers'));
 const UpdatetUser = lazy(() => import('../pages/Users/UpdateUsers'));
 const AddressPage = lazy(() => import('../pages/Address/AddressPage'));
-
+const PasswordPage = lazy(() => import('../pages/Password/PasswordPage'));
 const coreRoutes = [
   
   {
@@ -82,6 +82,11 @@ const coreRoutes = [
     path: '/users/address/:id',
   title: 'User Address',
   component: AddressPage,
+},
+{
+  path: '/users/password/:id',
+  title: 'User Password',
+  component: PasswordPage,
 }
 
   

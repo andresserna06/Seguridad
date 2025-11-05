@@ -75,7 +75,7 @@ class UserRoleController:
             # Process optional data
             if data is None:
                 data = {}
-            startAt = datetime.strptime(data.get('endAt'), "%Y-%m-%d %H:%M:%S")
+            startAt = datetime.strptime(data.get('startAt'), "%Y-%m-%d %H:%M:%S")
             endAt = datetime.strptime(data.get('endAt'), "%Y-%m-%d %H:%M:%S")
             new_user_role = UserRole(
                 id=str(uuid.uuid4()),

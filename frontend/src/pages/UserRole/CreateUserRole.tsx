@@ -36,11 +36,14 @@ const CreateUserRole: React.FC = () => {
                 value: u.id ?? 0,
                 label: u.name ?? "Sin nombre",
             })),
+            required: true, 
         },
     ];
 
+
     const handleSubmit = async (formData: Record<string, any>) => {
         try {
+
             console.log(formData.user_id)
             const user_id = Number(formData.user_id);
             const role_id = Number(id);
@@ -49,6 +52,9 @@ const CreateUserRole: React.FC = () => {
             const now = new Date();
             const start_At = now;
             const end_At = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
+
+            console.log(start_At);
+            console.log(end_At);
 
             // Objeto completo tipo UserRole
             const newUserRole: Omit<UserRole, "id"> = {
@@ -59,6 +65,7 @@ const CreateUserRole: React.FC = () => {
             };
 
             const created = await createUserRole(newUserRole);
+            console.log(created);
 
             if (created) {
                 Swal.fire({

@@ -7,6 +7,7 @@ import App from './App';
 import './index.css';
 import './satoshi.css';
 import { msalInstance } from './components/Auth/msalConfig'; // 👈 importa tu instancia configurada
+import { LibraryProvider } from './context/LibraryContext'; // <-- importa el contexto
 
 //  Inicializar MSAL antes de renderizar la app
 msalInstance
@@ -14,11 +15,13 @@ msalInstance
   .then(() => {
     ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <React.StrictMode>
-        <Provider store={store}>
-          <Router>
-            <App />
-          </Router>
-        </Provider>
+        <LibraryProvider>      
+          <Provider store={store}>
+            <Router>
+              <App />
+            </Router>
+          </Provider>
+        </LibraryProvider>     
       </React.StrictMode>
     );
   })

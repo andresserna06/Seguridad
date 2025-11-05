@@ -13,10 +13,10 @@ const App = () => {
 
   // Campos del formulario (se pueden adaptar según tu modelo)
   const userFields = [
-    { name: "name", label: "Nombre", type: "text" as const },
-    { name: "email", label: "Correo", type: "email" as const },
-    { name: "phone", label: "Teléfono", type: "text" as const },
-    { name: "city", label: "Ciudad", type: "text" as const },
+    { name: "name", label: "Nombre", type: "text" as const, required: true },
+    { name: "email", label: "Correo", type: "email" as const, required: true },
+    { name: "phone", label: "Teléfono", type: "text" as const, required: true },
+    { name: "city", label: "Ciudad", type: "text" as const, required: true },
   ];
 
   // Crear usuario

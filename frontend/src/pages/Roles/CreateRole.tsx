@@ -8,8 +8,8 @@ const CreateRole = () => {
   const navigate = useNavigate();
 
   const fields = [
-    { name: "name", label: "Nombre" },
-    { name: "description", label: "Descripción" },
+    { name: "name", label: "Nombre", required: true },
+    { name: "description", label: "Descripción", required: true },
   ];
 
   const handleSubmit = async (formData: any) => {

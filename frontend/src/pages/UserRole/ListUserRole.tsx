@@ -8,7 +8,7 @@ import { Role } from "../../models/role";
 import { User } from "../../models/user";
 import { UserRole } from "../../models/userRole";
 import Breadcrumb from "../../components/Breadcrumb";
-import GenericButtonMUI from "../../components/common/MaterialUI/GenericBottonMUI";
+import GenericButtonMUI from "../../components/common/MaterialUI/GenericButtonMUI";
 import Swal from "sweetalert2";
 
 const ListUserRole: React.FC = () => {
@@ -37,10 +37,8 @@ const ListUserRole: React.FC = () => {
         if (!roleData) return;
         setRole(roleData);
 
-        // Filtrar UserRoles del rol actual
         const filteredRoles = userRolesData.filter(ur => ur.role_id === roleId);
 
-        // Mapear a usuarios completos
         const filteredUsersList = filteredRoles
             .map(ur => usersData.find(u => u.id === ur.user_id))
             .filter(Boolean) as User[];
@@ -49,15 +47,12 @@ const ListUserRole: React.FC = () => {
         setFilteredUsers(filteredUsersList);
     };
 
-    // Solo acción de eliminar
     const handleAction = (action: string, user: User) => {
         if (action !== "delete" || !role) return;
 
-        // Buscar el UserRole correspondiente
         const userRole = filteredUserRoles.find(
             ur => ur.user_id === user.id && ur.role_id === role.id
         );
-        console.log(userRole?.id);
         if (!userRole) return;
 
         Swal.fire({
@@ -72,7 +67,7 @@ const ListUserRole: React.FC = () => {
         }).then(async (result) => {
             if (result.isConfirmed) {
                 try {
-                    await deleteUserRole(userRole.id!); // usamos el UUID del backend
+                    await deleteUserRole(userRole.id!);
                     Swal.fire("Eliminado", `El rol fue eliminado para ${user.name}`, "success");
                     fetchData();
                 } catch (error) {
@@ -89,7 +84,13 @@ const ListUserRole: React.FC = () => {
 
     if (!role) return <p>Cargando...</p>;
 
-    const columns = ["id", "name", "email"];
+    //  Columnas con key y label 
+    const columns = [
+        { key: "id", label: "ID Usuario" },
+        { key: "name", label: "Nombre" },
+        { key: "email", label: "Correo Electrónico" }
+    ];
+
     const actions = [{ name: "delete", label: "Eliminar Rol" }];
 
     return (

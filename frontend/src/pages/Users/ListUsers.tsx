@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI";
-import { getUsers, deleteUser } from "../../services/userService";
+import { getUsers, deleteUser, createUser } from "../../services/userService";
 import { User } from "../../models/user";
 import Swal from "sweetalert2";
 
@@ -14,14 +14,47 @@ const ListUsers = () => {
   }, []);
 
   const fetchData = async () => {
-    const users = await getUsers();
-    setData(users);
+    try {
+      const users = await getUsers();
+
+      const storedUser = localStorage.getItem("user");
+      let oauthUsers: User[] = [];
+
+      if (storedUser) {
+        try {
+          const userObj: User = JSON.parse(storedUser);
+          const existingUser = users.find(u => u.email === userObj.email);
+
+          if (!existingUser) {
+            const createdUser = await createUser({
+              name: userObj.name,
+              email: userObj.email,
+              // agrega otros campos que tu API necesite
+            });
+            oauthUsers.push(createdUser!);
+          } else {
+            oauthUsers.push(existingUser);
+          }
+        } catch (error) {
+          console.error("Error parsing or creating OAuth user:", error);
+        }
+      }
+
+      const mergedUsers = [
+        ...users,
+        ...oauthUsers.filter(u => !users.some(apiUser => apiUser.email === u.email))
+      ];
+
+      setData(mergedUsers);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
   };
 
   const handleAdd = () => {
     navigate("/users/create");
   };
-  // Acción al hacer clic en Address
+
   const handleAction = async (name: string, item: Record<string, any>) => {
     if (name === "address") {
       navigate(`/users/address/${item.id}`);
@@ -29,10 +62,9 @@ const ListUsers = () => {
       navigate(`/users/update/${item.id}`);
     } else if (name === "delete") {
       await handleDelete(item);
-      // Aquí puedes agregar la lógica para eliminar un usuario si es necesario
+    } else if (name === "contraseñas") {
+      navigate(`/users/password/${item.id}`);
     }
-
-
   };
 
   const handleDelete = async (item: any) => {
@@ -48,9 +80,9 @@ const ListUsers = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await deleteUser(item.id); // función del service
+          await deleteUser(item.id);
           Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
-          fetchData(); // refresca la lista
+          fetchData();
         } catch (error) {
           console.error("Error deleting user:", error);
           Swal.fire("Error", "No se pudo eliminar el usuario", "error");
@@ -59,7 +91,13 @@ const ListUsers = () => {
     });
   };
 
-  const columns = ["id", "name", "email"];
+  // 🔹 Columnas con key y label amigable
+  const columns = [
+    { key: "id", label: "ID" },
+    { key: "name", label: "Nombre" },
+    { key: "email", label: "Correo Electrónico" }
+  ];
+
   const actions = [
     { name: "edit", label: "Editar" },
     { name: "delete", label: "Eliminar" },
@@ -72,7 +110,7 @@ const ListUsers = () => {
       <GenericTableMUI
         title="Usuarios"
         data={data}
-        columns={columns}
+        columns={columns} // ahora usa key/label
         actions={actions}
         onAction={handleAction}
         onAdd={handleAdd}
