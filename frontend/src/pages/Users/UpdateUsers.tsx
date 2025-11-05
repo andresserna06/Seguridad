@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
-import { getUserById, updateUser } from "../../services/userService";
-import { User } from "../../models/user";
-import Breadcrumb from "../../components/Breadcrumb";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
+import TailwindUserForm from "../../components/common/TailWind/TailwindUserForm";
+import  { getUserById }  from "../../services/userService";
+import { updateUser } from "../../services/userService";
+import { User } from '../../models/user';
+import Breadcrumb from "../../components/Breadcrumb";
 
-const UpdateUserPage: React.FC = () => {
+const UpdateUser: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState<User | null>(null);
@@ -45,7 +46,7 @@ const UpdateUserPage: React.FC = () => {
                     icon: "success",
                     timer: 3000,
                 });
-                navigate("/users");
+                navigate("/users/list"); // Redirección unificada
             } else {
                 Swal.fire({
                     title: "Error",
@@ -76,10 +77,17 @@ const UpdateUserPage: React.FC = () => {
                 fields={updateFields}
                 initialData={user} // Se asegura que los datos iniciales tengan id y valores
                 onSubmit={handleUpdateUser}
-                onClose={() => navigate("/users")}
+                onClose={() => navigate("/users/list")}
+            />
+
+            {/* Formulario Tailwind */}
+            <TailwindUserForm
+                handleUpdate={handleUpdateUser}
+                mode={2} // 2 = actualización
+                user={user}
             />
         </div>
     );
 };
 
-export default UpdateUserPage;
+export default UpdateUser;

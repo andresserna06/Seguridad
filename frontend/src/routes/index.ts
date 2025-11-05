@@ -1,37 +1,44 @@
 import { lazy } from 'react';
 
-
+// Pages
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
 const FormLayout = lazy(() => import('../pages/Form/FormLayout'));
-const Profile = lazy(() => import('../pages/Profile'));
 const ListRoles = lazy(() => import('../pages/Roles/ListRole'));
 const CreateRole = lazy(() => import('../pages/Roles/CreateRole'));
 const UpdateRole = lazy(() => import('../pages/Roles/UpdateRole'));
 const ListUserRole = lazy(() => import('../pages/UserRole/ListUserRole'));
 const CreateUserRole = lazy(() => import('../pages/UserRole/CreateUserRole'));
-
 const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
-const CreateUser = lazy(() => import('../pages/Users/CreateUsers'));
-const UpdatetUser = lazy(() => import('../pages/Users/UpdateUsers'));
+const CreateUser = lazy(() => import('../pages/Users/create'));
+const UpdateUser = lazy(() => import('../pages/Users/UpdateUsers'));
 const AddressPage = lazy(() => import('../pages/Address/AddressPage'));
 const PasswordPage = lazy(() => import('../pages/Password/PasswordPage'));
+const ProfilePage = lazy(() => import('../pages/Users/Profile'));
+
+// Components
+const TailwindUserProfile = lazy(() => import('../components/common/TailWind/TailwindProfile'));
+
 const coreRoutes = [
-  
+  // Perfil
   {
     path: '/profile',
     title: 'Profile',
-    component: Profile,
+    component: TailwindUserProfile,
   },
-  {
-    path: '/forms/form-elements',
-    title: 'Forms Elements',
-    component: FormElements,
-  },
+
+  // Formularios
   {
     path: '/forms/form-layout',
     title: 'Form Layouts',
     component: FormLayout,
   },
+  {
+    path: '/forms/form-elements',
+    title: 'Form Elements',
+    component: FormElements,
+  },
+
+  // Roles
   {
     path: '/roles',
     title: 'Roles',
@@ -47,11 +54,8 @@ const coreRoutes = [
     title: 'Update Role',
     component: UpdateRole,
   },
-  {
-    path: '/roles/update/:id',
-    title: 'Update Role',
-    component: UpdateRole,
-  },
+
+  // User Roles
   {
     path: '/user-roles/:id',
     title: 'User Role',
@@ -59,13 +63,13 @@ const coreRoutes = [
   },
   {
     path: '/user-roles/:id/create',
-    title: ' Create User Role',
+    title: 'Create User Role',
     component: CreateUserRole,
   },
 
   {
-    path: '/users',
-    title: 'Users',
+    path: '/users/list',
+    title: 'List Users',
     component: ListUsers,
   },
   {
@@ -76,7 +80,7 @@ const coreRoutes = [
   {
     path: '/users/update/:id',
     title: 'Update User',
-    component: UpdatetUser,
+    component: UpdateUser,
   },
   {
     path: '/users/address/:id',
@@ -87,9 +91,18 @@ const coreRoutes = [
   path: '/users/password/:id',
   title: 'User Password',
   component: PasswordPage,
-}
+},
 
-  
+{
+  path: '/users/address/:id',
+  title: 'User Address',
+  component: AddressPage,
+},
+  {
+    path: '/profile/:id',
+    title: 'Perfil',
+    component: ProfilePage,
+  },
 ];
 
 const routes = [...coreRoutes];

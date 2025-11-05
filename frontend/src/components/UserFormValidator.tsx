@@ -1,4 +1,4 @@
-import { User } from "../../models/user";
+import { User } from "../models/user";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
@@ -14,7 +14,6 @@ interface MyFormProps {
 
 
 const UserFormValidator: React.FC<MyFormProps> = ({ mode, handleCreate, handleUpdate,user }) => {
-
     const handleSubmit = (formattedValues: User) => {
         if (mode === 1 && handleCreate) {
             handleCreate(formattedValues);  // Si `handleCreate` está definido, lo llamamos
@@ -26,8 +25,12 @@ const UserFormValidator: React.FC<MyFormProps> = ({ mode, handleCreate, handleUp
     };
 
     return (
+        //Inicializamos los valores del formulario, 
+        // si user tiene un valor (actualizacion), lo usamos para inicializar el formulario
+        // si user es nulo o indefinido (creación), usamos valores por defecto
+            
         <Formik
-            initialValues={user ? user :{
+            initialValues={user ? user :{ 
                 name: "",
                 email: "",
                 age: "",
@@ -35,6 +38,8 @@ const UserFormValidator: React.FC<MyFormProps> = ({ mode, handleCreate, handleUp
                 phone: "",
                 is_active: false,
             }}
+            // Yup me ayuda para definitir reglas de validación
+            //Formik me ayuda con la grestión de cajas de texto y emision de alertas
             validationSchema={Yup.object({
                 name: Yup.string().required("El nombre es obligatorio"),
                 email: Yup.string().email("Email inválido").required("El email es obligatorio"),
@@ -52,14 +57,14 @@ const UserFormValidator: React.FC<MyFormProps> = ({ mode, handleCreate, handleUp
                 const formattedValues = { ...values, age: Number(values.age) };  // Formateo adicional si es necesario
                 handleSubmit(formattedValues);
             }}
-            
-        >
+            // Muy importante las lineas Field y ErrorMessage, es importante que el name de Field y ErrorMessage coincidan con el name de donde queremos aplicar las restricciones
+        > 
             {({ handleSubmit }) => (
                 <Form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 p-6 bg-white rounded-md shadow-md">
                     {/* Nombre */}
                     <div>
                         <label htmlFor="name" className="block text-lg font-medium text-gray-700">Name</label>
-                        <Field type="text" name="name" className="w-full border rounded-md p-2" />
+                        <Field type="text" name="name" className="w-full border rounded-md p-2" /> 
                         <ErrorMessage name="name" component="p" className="text-red-500 text-sm" />
                     </div>
 
@@ -100,9 +105,9 @@ const UserFormValidator: React.FC<MyFormProps> = ({ mode, handleCreate, handleUp
                     {/* Botón de enviar */}
                     <button
                         type="submit"
-                        className={`py-2 px-4 text-white rounded-md ${mode === 1 ? "bg-blue-500 hover:bg-blue-600" : "bg-green-500 hover:bg-green-600"}`}
+                        className="text-black p-4"
                     >
-                        {mode === 1 ? "Crear" : "Actualizar"}
+                        {mode == 1 ? "Crear" : "Actualizar"}
                     </button>
                 </Form>
             )}
