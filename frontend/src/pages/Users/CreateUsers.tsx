@@ -69,6 +69,7 @@ const App = () => {
       ) : (
         <div className="mt-6">
           <GenericTailwindForm
+            open={open}
             title="Crear Usuario"
             fields={userFields}
             onSubmit={handleCreateUser}

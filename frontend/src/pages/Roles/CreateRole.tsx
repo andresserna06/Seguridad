@@ -11,8 +11,8 @@ const CreateRole: React.FC = () => {
   const { library } = useLibrary();
 
   const fields: FieldType[] = [
-    { name: "name", label: "Nombre", type: "text" },
-    { name: "description", label: "Descripción", type: "text" },
+    { name: "name", label: "Nombre", type: "text", required: true },
+    { name: "description", label: "Descripción", type: "text", required: true },
   ];
 
   const handleSubmit = async (formData: any) => {
@@ -34,12 +34,16 @@ const CreateRole: React.FC = () => {
         />
       ) : (
         <GenericTailwindForm
+          open={true}
           fields={fields}
           initialData={{}}
           onSubmit={handleSubmit}
           onCancel={() => navigate("/roles")}
+          
         />
       )}
+
+      
     </div>
   );
 };

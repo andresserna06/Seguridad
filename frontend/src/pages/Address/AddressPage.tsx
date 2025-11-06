@@ -21,6 +21,7 @@ const AddressPage: React.FC = () => {
     const [user, setUser] = useState<any | null>(null);
     const [userAddress, setUserAddress] = useState<Address | null>(null);
     const [open, setOpen] = useState(false);
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (id) fetchUserAddress();
@@ -206,8 +207,18 @@ const AddressPage: React.FC = () => {
                     )}
                 </>
             )}
+
+            <button
+                onClick={() => navigate("/users/list")}
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                ← Volver a Usuarios
+            </button>
+
         </div>
+
     );
 };
+
 
 export default AddressPage;

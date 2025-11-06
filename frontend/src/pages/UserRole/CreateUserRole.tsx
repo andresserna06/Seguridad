@@ -110,6 +110,7 @@ const CreateUserRole: React.FC = () => {
                 />
             ) : (
                 <GenericTailwindForm
+                    open={true}
                     title={`Agregar usuario al rol ${role.name.toUpperCase()}`}
                     fields={fields}
                     initialData={{ user_id: "" }}

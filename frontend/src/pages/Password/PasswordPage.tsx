@@ -2,9 +2,20 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
+// MUI
 import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import GenericButtonMUI from "../../components/common/MaterialUI/GenericButtonMUI";
+
+// Tailwind
+import TailwindTable from "../../components/common/TailWind/TailwindTable";
+import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+
+// Context
+import { useLibrary } from "../../context/LibraryContext";
+
+// Services
 import { getUserById } from "../../services/userService";
 import {
     getPasswords,
@@ -15,15 +26,16 @@ import {
 import { Password } from "../../models/password";
 
 const PasswordPage: React.FC = () => {
-    const { id } = useParams(); // ID del usuario
+    const { id } = useParams();
     const navigate = useNavigate();
+    const { library } = useLibrary();
 
     const [user, setUser] = useState<any | null>(null);
     const [passwords, setPasswords] = useState<Password[]>([]);
     const [openForm, setOpenForm] = useState(false);
     const [editingPassword, setEditingPassword] = useState<Password | null>(null);
 
-    // === Cargar datos de usuario y contraseñas ===
+    // === Cargar datos ===
     useEffect(() => {
         if (id) fetchUserData();
     }, [id]);
@@ -44,19 +56,17 @@ const PasswordPage: React.FC = () => {
         }
     };
 
-    // === Abrir modal para agregar ===
+    // === Agregar, Editar y Eliminar ===
     const handleAdd = () => {
         setEditingPassword(null);
         setOpenForm(true);
     };
 
-    // === Abrir modal para editar ===
     const handleEdit = (password: Password) => {
         setEditingPassword(password);
         setOpenForm(true);
     };
 
-    // === Eliminar contraseña ===
     const handleDelete = async (password: Password) => {
         Swal.fire({
             title: "Eliminar Contraseña",
@@ -84,7 +94,6 @@ const PasswordPage: React.FC = () => {
     // === Guardar (crear o actualizar) ===
     const handleSubmit = async (formData: Record<string, any>) => {
         try {
-            // Fechas automáticas
             const now = new Date();
             const startAt = now;
             const endAt = new Date(now.getFullYear(), 11, 31, 23, 59, 59);
@@ -100,8 +109,6 @@ const PasswordPage: React.FC = () => {
                 const updated = await updatePassword(editingPassword.id, payload);
                 if (updated) {
                     Swal.fire("Actualizado", "Contraseña actualizada correctamente", "success");
-                    setOpenForm(false);
-                    fetchUserData();
                 } else {
                     Swal.fire("Error", "No se pudo actualizar la contraseña", "error");
                 }
@@ -109,8 +116,6 @@ const PasswordPage: React.FC = () => {
                 const created = await createPassword(payload);
                 if (created) {
                     Swal.fire("Creado", "Contraseña creada correctamente", "success");
-                    setOpenForm(false);
-                    fetchUserData();
                 } else {
                     Swal.fire("Error", "No se pudo crear la contraseña", "error");
                 }
@@ -125,10 +130,12 @@ const PasswordPage: React.FC = () => {
     };
 
     // === Configuración tabla ===
-    const columns = [
+    const muiColumns = [
         { key: "id", label: "ID" },
-        { key: "content", label: "Contraseña" }
+        { key: "content", label: "Contraseña" },
     ];
+
+    const tailwindColumns: (keyof Password)[] = ["id", "content"];
 
     const actions = [
         { name: "edit", label: "Editar" },
@@ -141,33 +148,62 @@ const PasswordPage: React.FC = () => {
         else if (name === "delete") handleDelete(password);
     };
 
+    // === Render ===
     return (
-        <div style={{ padding: "20px" }}>
-            <h2>Contraseñas del Usuario: {user?.name}</h2>
+        <div className="p-4">
+            <h2 className="mb-4">Contraseñas del Usuario: {user?.name}</h2>
 
-            <GenericTableMUI
-                data={passwords}
-                columns={columns}
-                actions={actions}
-                onAction={handleAction}
-                onAdd={handleAdd}
-            />
+            {library === "material" ? (
+                <>
+                    {!openForm ? (
+                        <GenericTableMUI
+                            data={passwords}
+                            columns={muiColumns}
+                            actions={actions}
+                            onAction={handleAction}
+                            onAdd={handleAdd}
+                        />
+                    ) : (
+                        <GenericFormMUI
+                            open={openForm}
+                            title={editingPassword ? "Editar Contraseña" : "Agregar Contraseña"}
+                            fields={[{ name: "content", label: "Contraseña", type: "text" as const, required: true }]}
+                            initialData={editingPassword || { content: "" }}
+                            onClose={() => setOpenForm(false)}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+                </>
+            ) : (
+                <>
+                    {!openForm ? (
+                        <TailwindTable
+                            data={passwords}
+                            columns={tailwindColumns}
+                            actions={actions}
+                            onAction={handleAction}
+                            onAdd={handleAdd}
+                        />
+                    ) : (
+                        <GenericTailwindForm
+                            open={openForm}
+                            title={editingPassword ? "Editar Contraseña" : "Agregar Contraseña"}
+                            fields={[{ name: "content", label: "Contraseña", type: "text", required: true }]}
+                            initialData={editingPassword || { content: "" }}
+                            onCancel={() => setOpenForm(false)}
+                            onSubmit={handleSubmit}
+                        />
+                    )}
+                </>
+            )}
 
-            <GenericFormMUI
-                open={openForm}
-                title={editingPassword ? "Editar Contraseña" : "Agregar Contraseña"}
-                fields={[{ name: "content", label: "Contraseña", type: "text" as const, required: true }]}
-                initialData={editingPassword || { content: "" }}
-                onClose={() => setOpenForm(false)}
-                onSubmit={handleSubmit}
-            />
-
-            <GenericButtonMUI
-                label="← Volver a Usuarios"
+            <button
                 onClick={() => navigate("/users/list")}
-                color="primary"
-                sx={{ marginTop: 2 }}
-            />
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                ← Volver a Usuarios
+            </button>
+
         </div>
     );
 };

@@ -2,19 +2,19 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
-import TailwindForm from "../../components/common/TailWind/GenericTailwindForm";
 import { getUserById } from "../../services/userService";
 import { updateUser } from "../../services/userService";
 import { User } from '../../models/user';
 import Breadcrumb from "../../components/Breadcrumb";
 import { useLibrary } from "../../context/LibraryContext";
+import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
 
 const UpdateUser: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const [user, setUser] = useState<User | null>(null);
     const { library } = useLibrary();
-
+    
     // Cargar datos del usuario
     useEffect(() => {
         const fetchUser = async () => {
@@ -83,7 +83,8 @@ const UpdateUser: React.FC = () => {
                     onClose={() => navigate("/users/list")}
                 />
             ) : (
-                <TailwindForm
+                <GenericTailwindForm
+                    open={true}
                     title="Actualizar Usuario"
                     fields={updateFields}
                     initialData={user}

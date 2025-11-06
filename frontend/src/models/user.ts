@@ -12,6 +12,7 @@ export interface User {
   city?: string;
   phone?: string;
   is_active?: boolean;
+  photo?: string; // URL o base64 de la foto del usuario
 
   roles?: Role[];        // Un usuario puede tener varios roles asignados
   address?: Address;     // Un usuario puede tener una dirección

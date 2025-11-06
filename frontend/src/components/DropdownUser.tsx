@@ -10,6 +10,8 @@ const DropdownUser = () => {
 
   // Esto lee la base de datos global del store 
   const user = useSelector((state: RootState) => state.user.user);
+  console.log(user);
+  console.log(user?.photo);
   // --------------------------------------------------------------------
 
   const trigger = useRef<any>(null);
@@ -51,19 +53,18 @@ const DropdownUser = () => {
       >
         <span className="hidden text-right lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            {user ? user.name: 'Guest'}
+            {user ? user.name : 'Guest'}
           </span>
           <span className="block text-xs">UX Designer</span>
         </span>
 
-        <span className="h-12 w-12 rounded-full">
-          <img src={UserOne} alt="User" />
+        <span className="h-12 w-12 rounded-full border-2 border-white shadow-sm">
+          <img src={user?.photo?.trim() || UserOne} alt="User" />
         </span>
 
         <svg
-          className={`hidden fill-current sm:block ${
-            dropdownOpen ? 'rotate-180' : ''
-          }`}
+          className={`hidden fill-current sm:block ${dropdownOpen ? 'rotate-180' : ''
+            }`}
           width="12"
           height="8"
           viewBox="0 0 12 8"
@@ -84,9 +85,8 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${
-          dropdownOpen === true ? 'block' : 'hidden'
-        }`}
+        className={`absolute right-0 mt-4 flex w-62.5 flex-col rounded-sm border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark ${dropdownOpen === true ? 'block' : 'hidden'
+          }`}
       >
         <ul className="flex flex-col gap-5 border-b border-stroke px-6 py-7.5 dark:border-strokedark">
           <li>
