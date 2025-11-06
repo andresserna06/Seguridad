@@ -7,13 +7,16 @@ import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI"
 import { Role } from "../../models/role";
 import { User } from "../../models/user";
 import { UserRole } from "../../models/userRole";
+import TailwindTable from "../../components/common/TailWind/TailwindTable";
 import Breadcrumb from "../../components/Breadcrumb";
 import GenericButtonMUI from "../../components/common/MaterialUI/GenericButtonMUI";
 import Swal from "sweetalert2";
+import { useLibrary } from "../../context/LibraryContext";
 
 const ListUserRole: React.FC = () => {
     const { id } = useParams();
     const navigate = useNavigate();
+    const { library } = useLibrary();
 
     const [role, setRole] = useState<Role | null>(null);
     const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
@@ -84,26 +87,36 @@ const ListUserRole: React.FC = () => {
 
     if (!role) return <p>Cargando...</p>;
 
-    //  Columnas con key y label 
-    const columns = [
+    const muiColumns = [
         { key: "id", label: "ID Usuario" },
         { key: "name", label: "Nombre" },
         { key: "email", label: "Correo Electrónico" }
     ];
 
+    const tailwindColumns: (keyof typeof filteredUsers[0])[] = ["id", "name", "email"];
     const actions = [{ name: "delete", label: "Eliminar Rol" }];
 
     return (
         <div style={{ padding: "20px" }}>
             <Breadcrumb pageName={`${role.name.toUpperCase()} - Usuarios`} />
 
-            <GenericTableMUI
-                data={filteredUsers}
-                columns={columns}
-                actions={actions}
-                onAction={handleAction}
-                onAdd={handleAdd}
-            />
+            {library === "material" ? (
+                <GenericTableMUI
+                    data={filteredUsers}
+                    columns={muiColumns}
+                    actions={actions}
+                    onAction={handleAction}
+                    onAdd={handleAdd}
+                />
+            ) : (
+                <TailwindTable
+                    data={filteredUsers}
+                    columns={tailwindColumns}
+                    actions={actions}
+                    onAction={handleAction}
+                    onAdd={handleAdd}
+                />
+            )}
 
             <GenericButtonMUI
                 label="← Volver a Roles"

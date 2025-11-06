@@ -4,15 +4,19 @@ import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import GenericInfoCardMUI, { InfoItem, Action } from "../../components/common/MaterialUI/GenericInfoCardMUI";
-import GenericButtonMUI from "../../components/common/MaterialUI/GenericButtonMUI";
 import { getUserById } from "../../services/userService";
 import { getAddresses, createAddress, updateAddress, deleteAddress } from "../../services/addressService";
 import { Address } from "../../models/address";
+import { useLibrary } from "../../context/LibraryContext";
+import TailwindAddress from "../../components/common/TailWind/TailwindAddress";
+import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+
 
 const DEFAULT_COORDS = { lat: 4.60971, lng: -74.08175 }; // Bogotá por defecto
 
 const AddressPage: React.FC = () => {
-    const navigate = useNavigate();
+
+    const { library } = useLibrary();
     const { id } = useParams();
     const [user, setUser] = useState<any | null>(null);
     const [userAddress, setUserAddress] = useState<Address | null>(null);
@@ -44,7 +48,7 @@ const AddressPage: React.FC = () => {
             // Valores por defecto en caso de fallo
             let latitude = 0;
             let longitude = 0;
- 
+
             try {
                 // Llamada a Google Geocoding API
                 const geoResponse = await fetch(
@@ -144,37 +148,64 @@ const AddressPage: React.FC = () => {
         : [];
 
     return (
-        <div style={{ padding: "20px" }}>
-            <GenericInfoCardMUI
-                title={`Dirección del Usuario ${user?.name}`}
-                info={info}
-                url={
-                    userAddress
-                        ? `https://maps.google.com/maps?q=${userAddress.latitude},${userAddress.longitude}&z=15&output=embed`
-                        : undefined
-                }
-                actions={actions}
-                emptyState={
-                    !userAddress
-                        ? { label: "Sin dirección registrada", onAdd: () => setOpen(true) }
-                        : undefined
-                }
-            />
+        <div className="p-4">
+            {library === "material" ? (
+                <>
+                    <GenericInfoCardMUI
+                        title={`Dirección del Usuario ${user?.name}`}
+                        info={info}
+                        url={
+                            userAddress
+                                ? `https://maps.google.com/maps?q=${userAddress.latitude},${userAddress.longitude}&z=15&output=embed`
+                                : undefined
+                        }
+                        actions={actions}
+                        emptyState={
+                            !userAddress
+                                ? { label: "Sin dirección registrada", onAdd: () => setOpen(true) }
+                                : undefined
+                        }
+                    />
 
-            <GenericButtonMUI
-                label="← Volver a Usuarios"
-                onClick={() => navigate("/users")}
-                color="primary"
-            />
-
-            <GenericFormMUI
-                open={open}
-                title={userAddress ? "Actualizar Dirección" : "Agregar Dirección"}
-                fields={fields}
-                initialData={userAddress || {}}
-                onClose={() => setOpen(false)}
-                onSubmit={handleSubmit}
-            />
+                    <GenericFormMUI
+                        open={open}
+                        title={userAddress ? "Actualizar Dirección" : "Agregar Dirección"}
+                        fields={fields}
+                        initialData={userAddress || {}}
+                        onClose={() => setOpen(false)}
+                        onSubmit={handleSubmit}
+                    />
+                </>
+            ) : (
+                <>
+                    {!open ? (
+                        <TailwindAddress
+                            title={`Dirección del Usuario ${user?.name}`}
+                            info={info}
+                            url={
+                                userAddress
+                                    ? `https://maps.google.com/maps?q=${userAddress.latitude},${userAddress.longitude}&z=15&output=embed`
+                                    : undefined
+                            }
+                            actions={actions}
+                            emptyState={
+                                !userAddress
+                                    ? { label: "Sin dirección registrada", onAdd: () => setOpen(true) }
+                                    : undefined
+                            }
+                        />
+                    ) : (
+                        <GenericTailwindForm
+                            open={open}
+                            title={userAddress ? "Actualizar Dirección" : "Agregar Dirección"}
+                            fields={fields}
+                            initialData={userAddress || {}}
+                            onSubmit={handleSubmit}
+                            onCancel={() => setOpen(false)}
+                        />
+                    )}
+                </>
+            )}
         </div>
     );
 };

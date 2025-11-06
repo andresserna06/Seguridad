@@ -31,7 +31,6 @@ interface GenericTableProps {
     actions?: Action[];
     onAction?: (name: string, item: Record<string, any>) => void;
     onAdd?: () => void; // botón agregar
-    title?: string; // título opcional
 }
 
 const GenericTableMUI: React.FC<GenericTableProps> = ({
@@ -40,12 +39,9 @@ const GenericTableMUI: React.FC<GenericTableProps> = ({
     actions = [],
     onAction = () => {},
     onAdd,
-    title,
 }) => {
     return (
         <Box>
-            {title && <h2>{title}</h2>}
-
             {onAdd && (
                 <Box mb={2}>
                     <Button variant="contained" color="success" onClick={onAdd}>

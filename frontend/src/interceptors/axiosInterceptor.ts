@@ -1,3 +1,4 @@
+
 import axios from "axios";
 
 // Lista de rutas que no deben ser interceptadas
@@ -19,7 +20,6 @@ api.interceptors.request.use(
         // Agregar token si la ruta no está excluida
         const token = user["token"]
         if (token) {
-            console.log("agregando el token "+token)
             config.headers.Authorization = `Bearer ${token}`;
         }
         return config;

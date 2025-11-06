@@ -6,10 +6,13 @@ import Breadcrumb from "../../components/Breadcrumb";
 import { createUser } from "../../services/userService";
 import { User } from "../../models/user";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
+import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+import { useLibrary } from "../../context/LibraryContext";
 
 const App = () => {
   const navigate = useNavigate();
   const [open, setOpen] = useState(true); // controla el modal
+  const { library } = useLibrary();
 
   // Campos del formulario (se pueden adaptar según tu modelo)
   const userFields = [
@@ -31,7 +34,7 @@ const App = () => {
           timer: 3000,
         });
         setOpen(false); // cerrar modal
-        navigate("/users");
+        navigate("/users/list");
       } else {
         Swal.fire({
           title: "Error",
@@ -53,15 +56,26 @@ const App = () => {
   return (
     <div style={{ padding: "20px" }}>
       <Breadcrumb pageName="Crear Usuario" />
-      
-      {/* Formulario genérico en modal */}
-      <GenericFormMUI
-        open={open}
-        title="Crear Usuario"
-        fields={userFields}
-        onClose={() => navigate("/users")}
-        onSubmit={handleCreateUser}
-      />
+
+      {/* Mostrar formulario según la librería seleccionada */}
+      {library === "material" ? (
+        <GenericFormMUI
+          open={open}
+          title="Crear Usuario"
+          fields={userFields}
+          onClose={() => navigate("/users/list")}
+          onSubmit={handleCreateUser}
+        />
+      ) : (
+        <div className="mt-6">
+          <GenericTailwindForm
+            title="Crear Usuario"
+            fields={userFields}
+            onSubmit={handleCreateUser}
+            onCancel={() => navigate("/users/list")}
+          />
+        </div>
+      )}
     </div>
   );
 };

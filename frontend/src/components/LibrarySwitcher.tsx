@@ -10,8 +10,8 @@ const LibrarySwitcher: React.FC = () => {
     };
 
     return (
-        <button onClick={handleToggle} style={{ margin: '10px', padding: '5px 10px', borderRadius: '5px', border: '2px solid #4a4a4aff' }}>
-            Switch to {library === 'material' ? 'Tailwind' : 'Material UI'}
+        <button onClick={handleToggle} style={{ margin: '10px', padding: '5px 10px', borderRadius: '5px', border: '2px solid #e8e5e5ff' }}>
+            Cambiar a {library === 'material' ? 'Tailwind' : 'Material UI'}
         </button>
 
     );

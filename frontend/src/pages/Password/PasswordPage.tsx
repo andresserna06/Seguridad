@@ -164,7 +164,7 @@ const PasswordPage: React.FC = () => {
 
             <GenericButtonMUI
                 label="← Volver a Usuarios"
-                onClick={() => navigate("/users")}
+                onClick={() => navigate("/users/list")}
                 color="primary"
                 sx={{ marginTop: 2 }}
             />

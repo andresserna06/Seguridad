@@ -9,7 +9,7 @@ const UpdateRole = lazy(() => import('../pages/Roles/UpdateRole'));
 const ListUserRole = lazy(() => import('../pages/UserRole/ListUserRole'));
 const CreateUserRole = lazy(() => import('../pages/UserRole/CreateUserRole'));
 const ListUsers = lazy(() => import('../pages/Users/ListUsers'));
-const CreateUser = lazy(() => import('../pages/Users/create'));
+const CreateUser = lazy(() => import('../pages/Users/CreateUsers'));
 const UpdateUser = lazy(() => import('../pages/Users/UpdateUsers'));
 const AddressPage = lazy(() => import('../pages/Address/AddressPage'));
 const PasswordPage = lazy(() => import('../pages/Password/PasswordPage'));

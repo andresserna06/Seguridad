@@ -12,7 +12,7 @@ import {
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
-interface FieldType {
+export interface FieldType {
   name: string;
   label: string;
   type?: "text" | "number" | "email" | "password" | "select" | "datetime-local" | "checkbox";
@@ -20,7 +20,7 @@ interface FieldType {
   required?: boolean;
 }
 
-interface GenericFormFormikProps {
+interface GenericFormMUIProps {
   open: boolean;
   title?: string;
   fields: FieldType[];
@@ -29,7 +29,7 @@ interface GenericFormFormikProps {
   onSubmit: (formData: Record<string, any>) => void;
 }
 
-const GenericFormFormik: React.FC<GenericFormFormikProps> = ({
+const GenericFormMUI: React.FC<GenericFormMUIProps> = ({
   open,
   title,
   fields,
@@ -149,4 +149,4 @@ const GenericFormFormik: React.FC<GenericFormFormikProps> = ({
   );
 };
 
-export default GenericFormFormik;
+export default GenericFormMUI;

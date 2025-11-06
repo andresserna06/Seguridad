@@ -2,19 +2,25 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
+import GenericFormMUI, {FieldType} from "../../components/common/MaterialUI/GenericFormMUI";
 import { getRoleById, updateRole } from "../../services/roleService";
+import { useLibrary } from "../../context/LibraryContext";
+import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+
 
 const UpdateRole: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [role, setRole] = useState<any>(null);
+  const { library } = useLibrary();
 
   // Definir los campos del formulario
-  const fields = [
-    { name: "name", label: "Nombre" },
-    { name: "description", label: "Descripción" },
+  // Campos del formulario
+  const fields: FieldType[] = [
+    { name: "name", label: "Nombre", type: "text" },
+    { name: "description", label: "Descripción", type: "text" },
   ];
+
 
   // Cargar datos del rol al montar el componente
   useEffect(() => {
@@ -58,14 +64,23 @@ const UpdateRole: React.FC = () => {
   return (
     <div>
       <h2>Actualizar Rol</h2>
-      <GenericFormMUI
-        open={true} // aunque es página completa, GenericFormMUI requiere esta prop
-        title="Actualizar Rol"
-        fields={fields}
-        initialData={role}
-        onClose={() => navigate("/roles")}
-        onSubmit={handleSubmit}
-      />
+      {library === "material" ? (
+        <GenericFormMUI
+          open={true}
+          title="Actualizar Rol"
+          fields={fields}
+          initialData={role}
+          onClose={() => navigate("/roles")}
+          onSubmit={handleSubmit}
+        />
+      ) : (
+        <GenericTailwindForm
+          fields={fields}
+          initialData={role}
+          onSubmit={handleSubmit}
+          onCancel={() => navigate("/roles")}
+        />
+      )}
     </div>
   );
 };

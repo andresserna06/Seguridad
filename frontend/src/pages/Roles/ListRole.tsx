@@ -1,19 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI";
-import { getRoles, deleteRole } from "../../services/roleService"; 
+import { getRoles, deleteRole } from "../../services/roleService";
+import { useLibrary } from "../../context/LibraryContext";
 import Swal from "sweetalert2";
+import TailwindTable from "../../components/common/TailWind/TailwindTable";
 
 const RolesList = () => {
     const [roles, setRoles] = useState<any[]>([]);
     const navigate = useNavigate();
+    const { library } = useLibrary(); // Obtenemos la librería seleccionada
 
-    // 🔹 Columnas con key y label
-    const columns = [
+    // Columnas para MaterialUI
+    const muiColumns = [
         { key: "id", label: "ID" },
         { key: "name", label: "Nombre del Rol" },
         { key: "description", label: "Descripción" }
     ];
+
+    // Columnas para Tailwind (solo keys)
+    const tailwindColumns: (keyof typeof roles[0])[] = ["id", "name", "description"];
 
     const actions = [
         { name: "ver", label: "Ver" },
@@ -77,14 +83,25 @@ const RolesList = () => {
 
     return (
         <div>
-            <GenericTableMUI
-                title="Roles"
-                data={roles}
-                columns={columns} // usamos key/label
-                actions={actions}
-                onAdd={handleAdd}
-                onAction={handleAction}
-            />
+            
+            {library === "material" ? (
+                <GenericTableMUI
+                    data={roles}
+                    columns={muiColumns}
+                    actions={actions}
+                    onAdd={handleAdd}
+                    onAction={handleAction}
+                />
+
+            ) : (
+                <TailwindTable
+                    data={roles}
+                    columns={tailwindColumns}
+                    actions={actions}
+                    onAdd={handleAdd}
+                    onAction={handleAction}
+                />
+            )}
         </div>
     );
 };

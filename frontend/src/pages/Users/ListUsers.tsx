@@ -1,13 +1,17 @@
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI";
+import TailwindTable from "../../components/common/TailWind/TailwindTable";
 import { getUsers, deleteUser, createUser } from "../../services/userService";
 import { User } from "../../models/user";
 import Swal from "sweetalert2";
+import { useLibrary } from "../../context/LibraryContext";
+import LibrarySwitcher from "../../components/LibrarySwitcher";
 
 const ListUsers = () => {
   const [data, setData] = useState<User[]>([]);
   const navigate = useNavigate();
+  const { library } = useLibrary();
 
   useEffect(() => {
     fetchData();
@@ -64,6 +68,8 @@ const ListUsers = () => {
       await handleDelete(item);
     } else if (name === "contraseñas") {
       navigate(`/users/password/${item.id}`);
+    } else if (name === "profile") {
+      navigate(`/profile/${item.id}`);
     }
   };
 
@@ -91,30 +97,46 @@ const ListUsers = () => {
     });
   };
 
-  // 🔹 Columnas con key y label amigable
-  const columns = [
+  // Columnas con key y label amigable
+  // Para MaterialUI, usamos columnas con labels
+  const muiColumns = [
     { key: "id", label: "ID" },
     { key: "name", label: "Nombre" },
-    { key: "email", label: "Correo Electrónico" }
+    { key: "email", label: "Correo Electrónico" },
   ];
+
+  // Para Tailwind, solo las llaves (keyof User)
+  const tailwindColumns: (keyof User)[] = ["id", "name", "email"];
+
 
   const actions = [
     { name: "edit", label: "Editar" },
     { name: "delete", label: "Eliminar" },
     { name: "contraseñas", label: "Contraseñas" },
-    { name: "address", label: "Dirección" }
+    { name: "address", label: "Dirección" },
+    { name: "profile", label: "Perfil" } // <-- nueva acción
   ];
 
   return (
     <div>
-      <GenericTableMUI
-        title="Usuarios"
-        data={data}
-        columns={columns} // ahora usa key/label
-        actions={actions}
-        onAction={handleAction}
-        onAdd={handleAdd}
-      />
+      
+      {library === "material" ? (
+        <GenericTableMUI
+          data={data}
+          columns={muiColumns}
+          actions={actions}
+          onAction={handleAction}
+          onAdd={handleAdd}
+        />
+      ) : (
+        <TailwindTable
+          data={data}
+          columns={tailwindColumns}
+          actions={actions}
+          onAction={handleAction}
+          onAdd={handleAdd}
+        />
+      )}
     </div>
   );
 };

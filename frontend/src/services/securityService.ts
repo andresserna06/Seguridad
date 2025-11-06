@@ -1,57 +1,56 @@
+import axios from "axios";
 import { User } from "../models/user";
 import { store } from "../store/store";
 import { setUser } from "../store/userSlice";
-
+// Clase que hace los llamados al backend para loggearse
 class SecurityService extends EventTarget {
     keySession: string;
     API_URL: string;
     user: User;
-    theAuthProvider:any;
+    theAuthProvider: any;
+    
     constructor() {
         super();
 
-        this.keySession = 'session';
-        this.API_URL = import.meta.env.VITE_API_URL || ""; // Reemplaza con la URL real
+        this.keySession = 'token';
+        this.API_URL = "http://127.0.0.1:5000/api/";
         const storedUser = localStorage.getItem("user");
         if (storedUser) {
             this.user = JSON.parse(storedUser);
         } else {
-            this.user = {}
+            this.user = {};
         }
     }
 
     async login(user: User) {
-        console.log("llamando api " + `${this.API_URL}/login`)
+        console.log("llamando api " + `${this.API_URL}/login`); // Hacemos el llamado al backend para loggearse
         try {
-
-            const response = await fetch(`${this.API_URL}/login`, {
-                method: 'POST',
+            const response = await axios.post(`${this.API_URL}/login`, user, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(user),
             });
 
-            if (!response.ok) {
-                throw new Error('Login failed');
-            }
-
-            const data = await response.json();
-            localStorage.setItem("user", JSON.stringify(data));
-            store.dispatch(setUser(data));
+            const data = response.data; // Viene el usuario y el token
+            //localStorage.setItem("user", JSON.stringify(data));
+            store.dispatch(setUser(data["user"]));
+            localStorage.setItem(this.keySession, data["token"]);
             return data;
         } catch (error) {
             console.error('Error during login:', error);
             throw error;
         }
     }
+    
     getUser() {
         return this.user;
     }
+    
     logout() {
         this.user = {};
-        localStorage.removeItem("user");
+        
         this.dispatchEvent(new CustomEvent("userChange", { detail: null }));
+        store.dispatch(setUser(null));
     }
 
     isAuthenticated() {

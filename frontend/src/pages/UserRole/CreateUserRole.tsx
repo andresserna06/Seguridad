@@ -9,10 +9,13 @@ import { Role } from "../../models/role";
 import { User } from "../../models/user";
 import { createUserRole } from "../../services/userRoleService";
 import { UserRole } from "../../models/userRole";
+import { useLibrary } from "../../context/LibraryContext";
+import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
 
 const CreateUserRole: React.FC = () => {
     const { id } = useParams(); // ID del rol
     const navigate = useNavigate();
+    const { library } = useLibrary();
 
     const [role, setRole] = useState<Role | null>(null);
     const [users, setUsers] = useState<User[]>([]);
@@ -36,7 +39,7 @@ const CreateUserRole: React.FC = () => {
                 value: u.id ?? 0,
                 label: u.name ?? "Sin nombre",
             })),
-            required: true, 
+            required: true,
         },
     ];
 
@@ -92,16 +95,28 @@ const CreateUserRole: React.FC = () => {
 
     return (
         <div>
-            <Breadcrumb pageName={`AGREGAR USUARIO AL ROL ${role.name.toUpperCase()}`} />
-
-            <GenericFormMUI
-                open={true}
-                title={`Agregar usuario al rol ${role.name.toUpperCase()}`}
-                fields={fields}
-                onClose={() => navigate(`/user-roles/${id}`)}
-                onSubmit={handleSubmit}
-                initialData={{ user_id: "" }}
+            <Breadcrumb
+                pageName={`AGREGAR USUARIO AL ROL ${role.name.toUpperCase()}`}
             />
+
+            {library === "material" ? (
+                <GenericFormMUI
+                    open={true}
+                    title={`Agregar usuario al rol ${role.name.toUpperCase()}`}
+                    fields={fields}
+                    onClose={() => navigate(`/user-roles/${id}`)}
+                    onSubmit={handleSubmit}
+                    initialData={{ user_id: "" }}
+                />
+            ) : (
+                <GenericTailwindForm
+                    title={`Agregar usuario al rol ${role.name.toUpperCase()}`}
+                    fields={fields}
+                    initialData={{ user_id: "" }}
+                    onSubmit={async (values) => handleSubmit(values)}
+                    onCancel={() => navigate(`/user-roles/${id}`)}
+                />
+            )}
         </div>
     );
 };
