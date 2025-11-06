@@ -1,16 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { createPermission } from "../../services/permissionService";
 import GenericTailwindForm, { Field as TailwindField } from "../../components/common/TailWind/TailwindForm";
 import GenericFormMUI, { FieldType as MUIField } from "../../components/common/MaterialUI/GenericFormMUI";
+import { useLibrary } from "../../context/LibraryContext"; // 👈 Importa el contexto
 
 const CreatePermission: React.FC = () => {
   const navigate = useNavigate();
-  const [open, setOpen] = useState(true); // Control del modal MUI
-
-  // 👇 Cambia esta constante para alternar entre "tailwind" y "material"
-  const library: "tailwind" | "material" = "material";
+  const { library } = useLibrary(); // 👈 Usa la librería seleccionada globalmente
 
   const fields = [
     { name: "url", label: "URL", type: "text", required: true },
@@ -41,7 +39,6 @@ const CreatePermission: React.FC = () => {
   };
 
   const handleClose = () => {
-    setOpen(false);
     navigate("/permissions");
   };
 
@@ -51,7 +48,7 @@ const CreatePermission: React.FC = () => {
 
       {library === "material" ? (
         <GenericFormMUI
-          open={open}
+          open={true}
           title="Crear Permiso"
           fields={fields as MUIField[]}
           initialData={{ url: "", method: "GET", entity: "" }}
@@ -64,7 +61,7 @@ const CreatePermission: React.FC = () => {
           fields={fields as TailwindField[]}
           initialData={{ url: "", method: "GET", entity: "" }}
           onSubmit={handleSubmit}
-          onCancel={handleClose}
+          onCancel={() => navigate(`/permissions`)}
         />
       )}
     </div>

@@ -10,7 +10,8 @@ import { User } from "../../models/user";
 import { createUserRole } from "../../services/userRoleService";
 import { UserRole } from "../../models/userRole";
 import { useLibrary } from "../../context/LibraryContext";
-import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
+
 
 const CreateUserRole: React.FC = () => {
     const { id } = useParams(); // ID del rol
@@ -30,18 +31,18 @@ const CreateUserRole: React.FC = () => {
         fetchData();
     }, [id]);
 
-    const fields = [
-        {
-            name: "user_id",
-            label: "Seleccionar usuario",
-            type: "select" as const,
-            options: users.map((u) => ({
-                value: u.id ?? 0,
-                label: u.name ?? "Sin nombre",
-            })),
-            required: true,
-        },
-    ];
+const fields = [
+    {
+        name: "user_id",
+        label: "Seleccionar usuario",
+        type: "select" as const,
+        options: users.map((u) => ({
+            value: String(u.id ?? 0), // 👈 Convertir a string
+            label: u.name ?? "Sin nombre",
+        })),
+        required: true,
+    },
+];
 
 
     const handleSubmit = async (formData: Record<string, any>) => {
@@ -110,7 +111,6 @@ const CreateUserRole: React.FC = () => {
                 />
             ) : (
                 <GenericTailwindForm
-                    open={true}
                     title={`Agregar usuario al rol ${role.name.toUpperCase()}`}
                     fields={fields}
                     initialData={{ user_id: "" }}

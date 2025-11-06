@@ -7,7 +7,7 @@ import { updateUser } from "../../services/userService";
 import { User } from '../../models/user';
 import Breadcrumb from "../../components/Breadcrumb";
 import { useLibrary } from "../../context/LibraryContext";
-import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
 
 const UpdateUser: React.FC = () => {
     const { id } = useParams();
@@ -28,9 +28,6 @@ const UpdateUser: React.FC = () => {
     // Campos del formulario con la misma lógica que CreateUserRole
     const updateFields = [
         { name: "name", label: "Nombre", type: "text" as const },
-        { name: "email", label: "Correo", type: "email" as const },
-        { name: "phone", label: "Teléfono", type: "text" as const },
-        { name: "city", label: "Ciudad", type: "text" as const },
     ];
 
     // Manejar actualización
@@ -84,7 +81,6 @@ const UpdateUser: React.FC = () => {
                 />
             ) : (
                 <GenericTailwindForm
-                    open={true}
                     title="Actualizar Usuario"
                     fields={updateFields}
                     initialData={user}

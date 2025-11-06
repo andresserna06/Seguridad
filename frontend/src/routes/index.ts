@@ -21,6 +21,8 @@ const ListPermissions = lazy(() => import('../pages/Permissions/ListPermissions'
 const CreatePermission = lazy(() => import('../pages/Permissions/CreatePermission'));
 const UpdatePermission = lazy(() => import('../pages/Permissions/UpdatePermission'));
 const RolePermissions = lazy(() => import('../pages/RolePermissions/RolePermissions'));
+const CreateSession = lazy(() => import('../pages/Sessions/CreateSession'));
+const UpdateSession = lazy(() => import('../pages/Sessions/UpdateSession'));
 
 // Components
 const TailwindUserProfile = lazy(() => import('../components/common/TailWind/TailwindProfile'));
@@ -120,6 +122,17 @@ const coreRoutes = [
     title: "Todas las sesiones",
     component: AllSessionsPage,
   },
+  {
+    path: "/sessions/create",
+    title: "Crear sesion",
+    component: CreateSession,
+  },
+  {
+    path: "/sessions/update/:id",
+    title: "Actualizar sesion",
+    component: UpdateSession,
+  },
+
   {
     path: "/permissions",
     title: "Todos los permisos",

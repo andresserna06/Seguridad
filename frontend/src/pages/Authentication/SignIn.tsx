@@ -32,7 +32,7 @@ const SignIn: React.FC = () => {
     }
   };
 
-// login con Google
+  // login con Google
   const handleGoogleLogin = async () => { // Se marca como async para usar await, que espera respuestas de operaciones que toman tiempo (como conectarse a Firebase)
     try {
       const result = await signInWithPopup(auth, provider); // signInWithPopup es una función de Firebase que abre una ventana emergente para que el usuario seleccione su cuenta de Google y se autentique, auth es la instancia principal de autenticación que se creó en firebaseConfig.ts. provider es el proveedor de autenticación (en este caso, new GoogleAuthProvider()).
@@ -43,7 +43,7 @@ const SignIn: React.FC = () => {
 
       const userData = {
         uid: user.uid,
-        name: user.displayName || "", 
+        name: user.displayName || "",
         email: user.email || "",
         photo: user.photoURL || "",
         token: token,
@@ -63,28 +63,23 @@ const SignIn: React.FC = () => {
   };
 
   // login con Microsoft
+
   const handleMicrosoftLogin = async () => {
     try {
       const loginResponse = await msalInstance.loginPopup({
-        scopes: ['user.read', 'openid', 'profile', 'email'], //  incluye los básicos
+        scopes: ['user.read', 'openid', 'profile', 'email'],
       });
-
-      console.log('Inicio de sesión exitoso:', loginResponse);
 
       const account = loginResponse.account;
 
-      // Guardamos la info básica del usuario para usarla luego
       if (account) {
-        localStorage.setItem(
-          'user',
-          JSON.stringify({
-            name: account.name,
-            email: account.username,
-          }),
-        );
+        const userData = { name: account.name, email: account.username };
+        localStorage.setItem('user', JSON.stringify(userData));
+
+        // Actualiza Redux también
+        dispatch(setUser(userData));
       }
 
-      // Redirige al home
       navigate('/');
     } catch (error) {
       console.error('Error al iniciar sesión con Microsoft:', error);

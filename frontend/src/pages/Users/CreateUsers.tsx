@@ -6,8 +6,8 @@ import Breadcrumb from "../../components/Breadcrumb";
 import { createUser } from "../../services/userService";
 import { User } from "../../models/user";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
-import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
 import { useLibrary } from "../../context/LibraryContext";
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
 
 const App = () => {
   const navigate = useNavigate();
@@ -69,7 +69,6 @@ const App = () => {
       ) : (
         <div className="mt-6">
           <GenericTailwindForm
-            open={open}
             title="Crear Usuario"
             fields={userFields}
             onSubmit={handleCreateUser}
