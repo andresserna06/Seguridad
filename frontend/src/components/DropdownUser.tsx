@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { useSelector } from "react-redux";
 import { RootState } from "../store/store";
 
-import UserOne from '../images/user/user-01.png';
+import UserOne from '../images/user/user-00.png';
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
