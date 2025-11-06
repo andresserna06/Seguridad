@@ -10,7 +10,6 @@ import GenericButtonMUI from "../../components/common/MaterialUI/GenericButtonMU
 
 // Tailwind
 import TailwindTable from "../../components/common/TailWind/TailwindTable";
-import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
 
 // Context
 import { useLibrary } from "../../context/LibraryContext";
@@ -24,6 +23,7 @@ import {
     deletePassword,
 } from "../../services/passwordService";
 import { Password } from "../../models/password";
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
 
 const PasswordPage: React.FC = () => {
     const { id } = useParams();
@@ -186,7 +186,6 @@ const PasswordPage: React.FC = () => {
                         />
                     ) : (
                         <GenericTailwindForm
-                            open={openForm}
                             title={editingPassword ? "Editar Contraseña" : "Agregar Contraseña"}
                             fields={[{ name: "content", label: "Contraseña", type: "text", required: true }]}
                             initialData={editingPassword || { content: "" }}

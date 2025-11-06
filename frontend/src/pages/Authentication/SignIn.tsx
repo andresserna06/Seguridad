@@ -119,11 +119,6 @@ const SignIn: React.FC = () => {
                 height={32}
               />
 
-              <p className="2xl:px-20">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
-                suspendisse.
-              </p>
-
               <span className="mt-15 inline-block">
                 <svg
                   width="350"

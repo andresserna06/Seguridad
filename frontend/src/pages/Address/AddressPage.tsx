@@ -9,8 +9,7 @@ import { getAddresses, createAddress, updateAddress, deleteAddress } from "../..
 import { Address } from "../../models/address";
 import { useLibrary } from "../../context/LibraryContext";
 import TailwindAddress from "../../components/common/TailWind/TailwindAddress";
-import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
-
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
 
 
 const DEFAULT_COORDS = { lat: 4.60971, lng: -74.08175 }; // Bogotá por defecto
@@ -198,7 +197,6 @@ const AddressPage: React.FC = () => {
                         />
                     ) : (
                         <GenericTailwindForm
-                            open={open}
                             title={userAddress ? "Actualizar Dirección" : "Agregar Dirección"}
                             fields={fields}
                             initialData={userAddress || {}}
