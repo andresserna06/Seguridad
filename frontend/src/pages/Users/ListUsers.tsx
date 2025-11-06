@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import TailwindTable from "../../components/TailWind/TailwindTable";
-import { User } from "../../models/user";
-import { userService } from "../../services/userService";
-import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI";
+import TailwindTable from "../../components/common/TailWind/TailwindTable";
+import { userService } from "../../services/userService";
+import { User } from "../../models/user";
 
 const ListUsers: React.FC = () => {
   const navigate = useNavigate();
@@ -15,73 +16,80 @@ const ListUsers: React.FC = () => {
 
   const fetchData = async () => {
     try {
-      const users = await userService.getUsers();
-      setUsers(users);
+      const data = await userService.getUsers();
+      setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
     }
   };
 
-  const handleAction = async (action: string, item: User) => {
-    if (action === "edit") {
-      navigate(`/users/update/${item.id}`);
-    } else if (action === "delete") {
-      await deleteUser(item);
-    } else if (action === "profile") {
-      navigate(`/users/profile/${item.id}`);
-    }
+  const handleAddUser = () => {
+    // Navega a la ruta de creación
+    navigate("/users/create");
   };
 
-  const deleteUser = async (item: User) => {
+  const handleAction = async (action: string, item: User) => {
+    if (action === "edit") navigate(`/users/update/${item.id}`);
+    else if (action === "delete") await handleDelete(item);
+    else if (action === "address") navigate(`/users/address/${item.id}`);
+    else if (action === "profile") navigate(`/profile/${item.id}`);
+  };
+
+  const handleDelete = async (item: User) => {
     Swal.fire({
-      title: "Eliminación",
-      text: "Está seguro de querer eliminar el registro?",
+      title: "Eliminar Usuario",
+      text: "¿Está seguro de eliminar este usuario?",
       icon: "warning",
       showCancelButton: true,
+      confirmButtonText: "Sí, eliminar",
+      cancelButtonText: "Cancelar",
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, eliminar",
-      cancelButtonText: "No",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const success = await userService.deleteUser(item.id!);
-        if (success) {
-          Swal.fire({
-            title: "Eliminado",
-            text: "El registro se ha eliminado",
-            icon: "success",
-          });
+        try {
+          const success = await userService.deleteUser(item.id!);
+          if (success) {
+            Swal.fire("Eliminado", "El usuario ha sido eliminado", "success");
+            fetchData();
+          } else {
+            Swal.fire("Error", "No se pudo eliminar el usuario", "error");
+          }
+        } catch (error) {
+          console.error("Error deleting user:", error);
+          Swal.fire("Error", "No se pudo eliminar el usuario", "error");
         }
-        fetchData();
       }
     });
   };
 
-  const handleAddUser = () => {
-    navigate("/users/create"); // Redirige al CreateUser
-  };
+  const columns: (keyof User)[] = ["id", "name", "email"];
+  const actions = [
+    { name: "profile", label: "Perfil" },
+    { name: "edit", label: "Editar" },
+    { name: "delete", label: "Eliminar" },
+    { name: "address", label: "Dirección" },
+  ];
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Usuarios</h2>
-        <button
-          onClick={handleAddUser}
-          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
-        >
-          Nuevo Usuario
-        </button>
-      </div>
+    <div className="p-4">
+      {/* Tabla Material UI */}
+      <GenericTableMUI
+        title="Usuarios"
+        data={users}
+        columns={columns}
+        actions={actions}
+        onAction={handleAction}
+        onAdd={handleAddUser} // Navega a /users/create
+      />
 
+      {/* Tabla Tailwind */}
       <TailwindTable
         data={users}
-        columns={["id", "name", "email"]}
-        actions={[
-          { name: "profile", label: "Perfil" },
-          { name: "edit", label: "Edit" },
-          { name: "delete", label: "Delete" },
-        ]}
+        columns={columns}
+        actions={actions}
         onAction={handleAction}
+        onAdd={handleAddUser} // También navega a /users/create
       />
     </div>
   );

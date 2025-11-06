@@ -1,7 +1,7 @@
 import axios from "axios"; // Libreria para hacer llamados desde la API
 import { User } from "../models/user";
 
-const API_URL = import.meta.env.VITE_API_URL + "/users" || ""; // Aqui me traigo la variable de entorno de donde viene el Backend, link del servidor donde se encuentran los usuarios
+const API_URL = import.meta.env.VITE_API_URL + "users" || ""; // Aqui me traigo la variable de entorno de donde viene el Backend, link del servidor donde se encuentran los usuarios
 
 class UserService {
     async getUsers(): Promise<User[]> { // asyc para que la aplicacion no se congele mientras espera la respuesta del backend

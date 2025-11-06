@@ -1,12 +1,12 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import { BrowserRouter as Router } from "react-router-dom";
-import { Provider } from "react-redux";
-import { store } from "./store/store";
-import App from "./App";
-import "./index.css";
-import "./satoshi.css";
-import { msalInstance } from "./components/Auth/msalConfig"; // 👈 Instancia configurada de MSAL
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import { BrowserRouter as Router } from 'react-router-dom';
+import { Provider } from 'react-redux'; // Importamos Provider de react-redux
+import { store } from './store/store';  // Importamos el store que creaste
+import App from './App';
+import './index.css';
+import './satoshi.css';
+import { msalInstance } from './components/Auth/msalConfig'; // 👈 importa tu instancia configurada
 
 //  Inicializar MSAL antes de renderizar la app
 msalInstance
@@ -22,6 +22,6 @@ msalInstance
       </React.StrictMode>
     );
   })
-  .catch((error) => {
+  .catch((error: any) => {
     console.error("Error inicializando MSAL:", error);
   });
