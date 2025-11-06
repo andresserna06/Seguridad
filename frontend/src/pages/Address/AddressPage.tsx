@@ -1,6 +1,6 @@
 // src/pages/AddressPage.tsx
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import GenericInfoCardMUI, { InfoItem, Action } from "../../components/common/MaterialUI/GenericInfoCardMUI";

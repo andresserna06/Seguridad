@@ -118,12 +118,13 @@ const ListUserRole: React.FC = () => {
                 />
             )}
 
-            <GenericButtonMUI
-                label="← Volver a Roles"
+            <button
                 onClick={() => navigate("/roles")}
-                sx={{ marginTop: "20px" }}
-                color="primary"
-            />
+                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+                ← Volver a Roles
+            </button>
+
         </div>
     );
 };

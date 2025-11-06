@@ -102,30 +102,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
           </h3>
 
           <ul className="mb-6 flex flex-col gap-1.5">
-            {/* Perfil */}
-            <li>
-              <NavLink
-                to="/profile"
-                className={`group relative flex items-center gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
-                  pathname.includes('profile') && 'bg-graydark dark:bg-meta-4'
-                }`}
-              >
-                <svg
-                  className="fill-current"
-                  width="18"
-                  height="18"
-                  viewBox="0 0 18 18"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M9 9C11.2091 9 13 7.20914 13 5C13 2.79086 11.2091 1 9 1C6.79086 1 5 2.79086 5 5C5 7.20914 6.79086 9 9 9ZM9 10C5.13401 10 1 12.134 1 16V17C1 17.5523 1.44772 18 2 18H16C16.5523 18 17 17.5523 17 17V16C17 12.134 12.866 10 9 10Z"
-                    fill=""
-                  />
-                </svg>
-                Perfil
-              </NavLink>
-            </li>
 
             {/* Usuarios */}
             <li>
@@ -145,6 +121,27 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                   <path d="M16 11C17.6569 11 19 9.65685 19 8C19 6.34315 17.6569 5 16 5C14.3431 5 13 6.34315 13 8C13 9.65685 14.3431 11 16 11ZM8 11C9.65685 11 11 9.65685 11 8C11 6.34315 9.65685 5 8 5C6.34315 5 5 6.34315 5 8C5 9.65685 6.34315 11 8 11ZM8 13C5.33 13 0 14.34 0 17V19C0 19.55 0.45 20 1 20H15C15.55 20 16 19.55 16 19V17C16 14.34 10.67 13 8 13ZM16 13C15.65 13 15.29 13.02 14.93 13.06C15.94 13.78 16.69 14.76 16.91 15.94C18.64 16.56 20 17.64 20 19V19.5C20 20.05 20.45 20.5 21 20.5H23C23.55 20.5 24 20.05 24 19.5V17C24 14.34 18.67 13 16 13Z" />
                 </svg>
                 Usuarios
+              </NavLink>
+            </li>
+
+            {/* Sesiones */}
+            <li>
+              <NavLink
+                to="/sessions" // o podrías usar "/sessions" si tienes una ruta global de sesiones
+                className={`group relative flex items-center gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  pathname.includes('/sessions') && 'bg-graydark dark:bg-meta-4'
+                }`}
+              >
+                <svg
+                  className="fill-current"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v8z"/>
+                </svg>
+                Sesiones
               </NavLink>
             </li>
 
@@ -184,6 +181,28 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                 Roles
               </NavLink>
             </li>
+
+            {/* Permisos */}
+            <li>
+              <NavLink
+                to="/permissions"
+                className={`group relative flex items-center gap-2.5 rounded-lg py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 ${
+                  pathname.includes('permissions') && 'bg-graydark dark:bg-meta-4'
+                }`}
+              >
+                <svg
+                  className="fill-current"
+                  width="20"
+                  height="20"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path d="M12 2C9.243 2 7 4.243 7 7v4H6c-1.103 0-2 .897-2 2v7c0 1.103.897 2 2 2h12c1.103 0 2-.897 2-2v-7c0-1.103-.897-2-2-2h-1V7c0-2.757-2.243-5-5-5zm-2 4c0-1.103.897-2 2-2s2 .897 2 2v4h-4V6zm9 6v7H5v-7h14z"/>
+                </svg>
+                Permisos
+              </NavLink>
+            </li>
+
           </ul>
         </nav>
       </div>
