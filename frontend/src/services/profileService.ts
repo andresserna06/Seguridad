@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../interceptors/axiosInterceptor";
 import { Profile } from "../models/profile";
 
 const API = import.meta.env.VITE_API_URL;
@@ -6,7 +6,7 @@ const API = import.meta.env.VITE_API_URL;
 export const profileService = {
   getProfileByUserId: async (userId: number): Promise<Profile | null> => {
     try {
-      const res = await axios.get(`${API}/profiles/user/${userId}`);
+      const res = await api.get(`${API}/profiles/user/${userId}`);
       return res.data || null;
     } catch (error) {
       console.error("Error fetching profile:", error);
@@ -23,7 +23,7 @@ export const profileService = {
     formData.append("phone", phone);
     if (photo) formData.append("photo", photo);
 
-    const res = await axios.post(`${API}/profiles/user/${userId}`, formData, {
+    const res = await api.post(`${API}/profiles/user/${userId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data;
@@ -38,7 +38,7 @@ export const profileService = {
     formData.append("phone", phone);
     if (photo) formData.append("photo", photo);
 
-    const res = await axios.put(`${API}/profiles/${profileId}`, formData, {
+    const res = await api.put(`${API}/profiles/${profileId}`, formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
     return res.data;

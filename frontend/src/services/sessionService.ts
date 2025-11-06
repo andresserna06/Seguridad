@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../interceptors/axiosInterceptor";
 import { Session } from "../models/session";
 
 
@@ -8,7 +8,7 @@ class SessionService {
   // Obtener todas las sesiones
   async getAll(): Promise<Session[]> {
     try {
-      const response = await axios.get<Session[]>(API_URL);
+      const response = await api.get<Session[]>(API_URL);
       return response.data;
     } catch (error: any) {
       console.error("Error al obtener sesiones:", error.response?.data || error.message);
@@ -19,7 +19,7 @@ class SessionService {
   // Obtener sesión por ID
   async getById(id: string): Promise<Session | null> {
     try {
-      const response = await axios.get<Session>(`${API_URL}/${id}`);
+      const response = await api.get<Session>(`${API_URL}/${id}`);
       return response.data;
     } catch (error: any) {
       console.error("Sesión no encontrada:", error.response?.data || error.message);
@@ -30,7 +30,7 @@ class SessionService {
   // Obtener sesiones de un usuario
   async getByUserId(userId: number): Promise<Session[]> {
     try {
-      const response = await axios.get<Session[]>(`${API_URL}/user/${userId}`);
+      const response = await api.get<Session[]>(`${API_URL}/user/${userId}`);
       return response.data;
     } catch (error: any) {
       console.error("Error al obtener sesiones del usuario:", error.response?.data || error.message);
@@ -49,7 +49,7 @@ async createSession(
   }
 ): Promise<Session | null> {
   try {
-    const response = await axios.post<Session>(`${API_URL}/user/${userId}`, data);
+    const response = await api.post<Session>(`${API_URL}/user/${userId}`, data);
     return response.data;
   } catch (error) {
     console.error("Error al crear sesión:", error);
@@ -60,7 +60,7 @@ async createSession(
   // Actualizar sesión
   async updateSession(id: string, data: Partial<Session>): Promise<Session | null> {
     try {
-      const response = await axios.put<Session>(`${API_URL}/${id}`, data);
+      const response = await api.put<Session>(`${API_URL}/${id}`, data);
       return response.data;
     } catch (error: any) {
       console.error("Error al actualizar sesión:", error.response?.data || error.message);
@@ -71,7 +71,7 @@ async createSession(
   // Eliminar sesión
   async deleteSession(id: string): Promise<boolean> {
     try {
-      await axios.delete(`${API_URL}/${id}`);
+      await api.delete(`${API_URL}/${id}`);
       return true;
     } catch (error: any) {
       console.error("Error al eliminar sesión:", error.response?.data || error.message);

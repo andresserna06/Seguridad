@@ -222,7 +222,6 @@ const AllSessionsPage: React.FC = () => {
           data={sessions}
           columns={tailwindColumns}
           actions={actions}
-          title="Sesiones"
           onAdd={handleOpenCreate}
           addButtonLabel="Nueva sesión"
           onAction={handleAction}

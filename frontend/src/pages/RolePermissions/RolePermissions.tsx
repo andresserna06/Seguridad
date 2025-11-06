@@ -6,6 +6,7 @@ import GenericTableMUI from "../../components/common/MaterialUI/GenericTableMUI"
 import { Checkbox } from "@mui/material";
 import { rolePermissionService, PermissionGroup } from "../../services/rolePermissionService";
 import { useLibrary } from "../../context/LibraryContext";
+import Swal from "sweetalert2";
 
 interface PermissionRow {
   id: number;
@@ -63,7 +64,12 @@ const RolePermissions: React.FC = () => {
       }
     }
 
-    alert("✅ Permisos guardados correctamente");
+    Swal.fire({
+                        title: "Completado",
+                        text: "Permiso configurado exitosamente",
+                        icon: "success",
+                        timer: 3000,
+                    });
   };
 
   if (loading) return <p>Cargando permisos...</p>;

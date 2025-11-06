@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "../interceptors/axiosInterceptor";
 import { User } from "../models/user";
 import { store } from "../store/store";
 import { setUser } from "../store/userSlice";
@@ -25,7 +25,7 @@ class SecurityService extends EventTarget {
     async login(user: User) {
         console.log("llamando api " + `${this.API_URL}/login`); // Hacemos el llamado al backend para loggearse
         try {
-            const response = await axios.post(`${this.API_URL}/login`, user, {
+            const response = await api.post(`${this.API_URL}/login`, user, {
                 headers: {
                     'Content-Type': 'application/json',
                 },
