@@ -67,14 +67,23 @@ const SignIn: React.FC = () => {
   const handleMicrosoftLogin = async () => {
     try {
       const loginResponse = await msalInstance.loginPopup({
-        scopes: ['user.read', 'openid', 'profile', 'email'],
+        scopes: ['user.read', 'openid', 'profile', 'email'], // scopes que necesitas
       });
 
       const account = loginResponse.account;
 
       if (account) {
-        const userData = { name: account.name, email: account.username };
+        const userData = {
+          name: account.name,
+          email: account.username,
+          idToken: loginResponse.idToken,           // Token de identificación
+          token: loginResponse.accessToken // Token de acceso (puede ser undefined)
+        };
+
+       
+
         localStorage.setItem('user', JSON.stringify(userData));
+        localStorage.setItem("token", userData.token);
 
         // Actualiza Redux también
         dispatch(setUser(userData));
@@ -85,6 +94,7 @@ const SignIn: React.FC = () => {
       console.error('Error al iniciar sesión con Microsoft:', error);
     }
   };
+
 
   return (
     <>

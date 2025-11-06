@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { Session } from "../../models/session";
 import TailwindTable from "../../components/common/TailWind/TailwindTable";
 import { sessionService } from "../../services/sessionService";
