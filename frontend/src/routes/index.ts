@@ -1,4 +1,6 @@
-import { lazy } from 'react';
+import { patch } from '@mui/material';
+import { Component, lazy } from 'react';
+import SignIn from '../pages/Authentication/SignIn';
 
 // Pages
 const FormElements = lazy(() => import('../pages/Form/FormElements'));
@@ -13,7 +15,12 @@ const CreateUser = lazy(() => import('../pages/Users/CreateUsers'));
 const UpdateUser = lazy(() => import('../pages/Users/UpdateUsers'));
 const AddressPage = lazy(() => import('../pages/Address/AddressPage'));
 const PasswordPage = lazy(() => import('../pages/Password/PasswordPage'));
-const ProfilePage = lazy(() => import('../pages/Users/Profile'));
+const ProfilePage = lazy(() => import('../pages/Profile/Profile'));
+const AllSessionsPage = lazy(() => import('../pages/Sessions/AllSessionsPage'));
+const ListPermissions = lazy(() => import('../pages/Permissions/ListPermissions'));
+const CreatePermission = lazy(() => import('../pages/Permissions/CreatePermission'));
+const UpdatePermission = lazy(() => import('../pages/Permissions/UpdatePermission'));
+const RolePermissions = lazy(() => import('../pages/RolePermissions/RolePermissions'));
 
 // Components
 const TailwindUserProfile = lazy(() => import('../components/common/TailWind/TailwindProfile'));
@@ -103,6 +110,37 @@ const coreRoutes = [
     title: 'Perfil',
     component: ProfilePage,
   },
+  {
+    path: 'singIn',
+    title: 'Iniciar Sesión',
+    component: SignIn,
+  },
+  {
+    path: "/sessions",
+    title: "Todas las sesiones",
+    component: AllSessionsPage,
+  },
+  {
+    path: "/permissions",
+    title: "Todos los permisos",
+    component: ListPermissions,
+  },
+  {
+    path: "/permissions/create",
+    title: "Crear Permiso",
+    component: CreatePermission,
+  },
+  {
+    path: "/permissions/update/:id",
+    title: "Actualizar Permiso",
+    component: UpdatePermission,
+  },
+    {
+    path: "/roles/:id/permissions",
+    title: "Role Permissions",
+    component: RolePermissions,
+  },
+
 ];
 
 const routes = [...coreRoutes];
