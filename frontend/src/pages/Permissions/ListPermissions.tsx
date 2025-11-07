@@ -88,7 +88,6 @@ const ListPermissions = () => {
         />
       ) : (
         <TailwindTable
-          title="Permisos"
           data={permissions}
           columns={tailwindColumns}
           actions={actions}

@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
-import GenericFormMUI, {FieldType} from "../../components/common/MaterialUI/GenericFormMUI";
+import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import { getRoleById, updateRole } from "../../services/roleService";
 import { useLibrary } from "../../context/LibraryContext";
-import GenericTailwindForm from "../../components/common/TailWind/GenericTailwindForm";
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
 
 
 const UpdateRole: React.FC = () => {
@@ -16,10 +15,11 @@ const UpdateRole: React.FC = () => {
 
   // Definir los campos del formulario
   // Campos del formulario
-  const fields: FieldType[] = [
-    { name: "name", label: "Nombre", type: "text" },
-    { name: "description", label: "Descripción", type: "text" },
+  const fields = [
+    { name: "name", label: "Nombre", type: "text" as const, required: true },
+    { name: "description", label: "Descripción", type: "text" as const, required: true },
   ];
+
 
 
   // Cargar datos del rol al montar el componente

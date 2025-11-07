@@ -1,5 +1,5 @@
-import { patch } from '@mui/material';
-import { Component, lazy } from 'react';
+
+import { lazy } from 'react';
 import SignIn from '../pages/Authentication/SignIn';
 
 // Pages

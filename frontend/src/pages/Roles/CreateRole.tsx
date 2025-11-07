@@ -4,16 +4,17 @@ import GenericFormMUI from "../../components/common/MaterialUI/GenericFormMUI";
 import { useLibrary } from "../../context/LibraryContext";
 import { createRole } from "../../services/roleService";
 import Breadcrumb from "../../components/Breadcrumb";
-import GenericTailwindForm, { FieldType } from "../../components/common/TailWind/GenericTailwindForm"; // solo para tipado, se puede ignorar el uso de password/email
+import GenericTailwindForm from "../../components/common/TailWind/TailwindForm";
 
 const CreateRole: React.FC = () => {
   const navigate = useNavigate();
   const { library } = useLibrary();
 
-  const fields: FieldType[] = [
-    { name: "name", label: "Nombre", type: "text", required: true },
-    { name: "description", label: "Descripción", type: "text", required: true },
+  const fields = [
+    { name: "name", label: "Nombre", type: "text" as const, required: true },
+    { name: "description", label: "Descripción", type: "text" as const, required: true },
   ];
+
 
   const handleSubmit = async (formData: any) => {
     await createRole(formData);
@@ -34,7 +35,6 @@ const CreateRole: React.FC = () => {
         />
       ) : (
         <GenericTailwindForm
-          open={true}
           fields={fields}
           initialData={{}}
           onSubmit={handleSubmit}

@@ -6,7 +6,6 @@ import { getUsers, deleteUser, createUser } from "../../services/userService";
 import { User } from "../../models/user";
 import Swal from "sweetalert2";
 import { useLibrary } from "../../context/LibraryContext";
-import LibrarySwitcher from "../../components/LibrarySwitcher";
 
 const ListUsers = () => {
   const [data, setData] = useState<User[]>([]);

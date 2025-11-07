@@ -3,6 +3,7 @@ import { User } from "../../../models/user";
 import { Profile } from "../../../models/profile";
 import { profileService } from "../../../services/profileService";
 import { Card, CardContent, Typography, Box, Button, TextField, Avatar } from "@mui/material";
+import Swal from "sweetalert2";
 
 interface MaterialProfileCardProps {
   user: User;
@@ -43,7 +44,7 @@ const MaterialUIProfile: React.FC<MaterialProfileCardProps> = ({
       }
     } catch (error) {
       console.error("Error al actualizar perfil:", error);
-      alert("No se pudo actualizar el perfil");
+      Swal.fire("No se pudo actualizar el perfil");
     }
   };
 

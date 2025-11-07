@@ -57,7 +57,6 @@ const CreatePermission: React.FC = () => {
         />
       ) : (
         <GenericTailwindForm
-          title="Crear Permiso"
           fields={fields as TailwindField[]}
           initialData={{ url: "", method: "GET", entity: "" }}
           onSubmit={handleSubmit}

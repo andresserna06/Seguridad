@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { User } from "../../../models/user";
 import { Profile } from "../../../models/profile";
 import { profileService } from "../../../services/profileService";
+import Swal from "sweetalert2";
 
 interface TailwindProfileProps {
   user: User;
@@ -42,14 +43,14 @@ const TailwindProfile: React.FC<TailwindProfileProps> = ({
       }
     } catch (error) {
       console.error("Error al actualizar perfil:", error);
-      alert("No se pudo actualizar el perfil");
+      Swal.fire("No se pudo actualizar el perfil");
     }
   };
 
   // Construir URL correcta de la imagen
   const photoURL = profile.photo
     ? `http://127.0.0.1:5000/api/profiles/${profile.photo.split("/").pop()}`
-    : `${import.meta.env.BASE_URL}default-avatar.png`; // default-avatar.png en public/
+    : `${import.meta.env.BASE_URL}default-avatar.pFFng`; // default-avatar.png en public/
 
   return (
     <div className="bg-white p-6 rounded-lg shadow-md max-w-3xl mx-auto">

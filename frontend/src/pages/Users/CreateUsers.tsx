@@ -69,7 +69,6 @@ const App = () => {
       ) : (
         <div className="mt-6">
           <GenericTailwindForm
-            title="Crear Usuario"
             fields={userFields}
             onSubmit={handleCreateUser}
             onCancel={() => navigate("/users/list")}

@@ -5,7 +5,7 @@ import * as Yup from "yup";
 export interface Field {
   name: string;
   label: string;
-  type: "text" | "number" | "select" | "email" | "password" | "checkbox";
+  type: "text" | "number" | "select" | "email" | "password" | "checkbox" | "datetime-local"; // ← AGREGADO
   options?: { value: string; label: string }[];
   required?: boolean;
 }
@@ -39,6 +39,9 @@ const GenericTailwindForm: React.FC<GenericTailwindFormProps> = ({
             .required(`${field.label} es obligatorio`);
         } else if (field.type === "checkbox") {
           acc[field.name] = Yup.boolean();
+        } else if (field.type === "datetime-local") {
+          // ← AGREGADO: Validación para datetime-local
+          acc[field.name] = Yup.string().required(`${field.label} es obligatorio`);
         } else {
           acc[field.name] = Yup.string().required(`${field.label} es obligatorio`);
         }
@@ -99,7 +102,7 @@ const GenericTailwindForm: React.FC<GenericTailwindFormProps> = ({
                     ))}
                   </FormikField>
                 ) : (
-                  // Otros tipos
+                  // Otros tipos (incluyendo datetime-local)
                   <FormikField
                     name={field.name}
                     type={field.type}

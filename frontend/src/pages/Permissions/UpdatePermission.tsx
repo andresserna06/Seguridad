@@ -85,7 +85,6 @@ const UpdatePermission: React.FC = () => {
     ) : (
       <GenericTailwindForm
         key={initialData.id || "empty"} // 👈 igual aquí
-        title="Editar Permiso"
         fields={fields as TailwindField[]}
         initialData={formInitialData}
         onSubmit={handleSubmit}

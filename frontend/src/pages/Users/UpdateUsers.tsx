@@ -81,7 +81,6 @@ const UpdateUser: React.FC = () => {
                 />
             ) : (
                 <GenericTailwindForm
-                    title="Actualizar Usuario"
                     fields={updateFields}
                     initialData={user}
                     onSubmit={handleUpdateUser}

@@ -111,7 +111,6 @@ const fields = [
                 />
             ) : (
                 <GenericTailwindForm
-                    title={`Agregar usuario al rol ${role.name.toUpperCase()}`}
                     fields={fields}
                     initialData={{ user_id: "" }}
                     onSubmit={async (values) => handleSubmit(values)}
